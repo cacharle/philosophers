@@ -6,61 +6,32 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 01:54:53 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/09 03:26:07 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/09 23:56:26 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-t_philo				*philos_new(int num, t_philo_routine routine)
+void				philo_eat(int id, int timeout)
 {
-	int		i;
-	t_philo	*philos;
-
-	if (num < 0)
-		return (NULL);
-	if ((philos = (t_philo*)h_calloc(num + 1, sizeof(t_philo))) == NULL)
-		return (NULL);
-	i = -1;
-	while (++i < num)
-	{
-		philos[i].id = num + 1;
-		if (pthread_create(&philos[i].thread, NULL, routine, philos + num) != 0)
-		{
-			philos_destroy(philos, i);
-			return (NULL);
-		}
-	}
-	return (philos);
+	philo_put_state_change(id, EVENT_EATING);
+	usleep(timeout * 1000);
 }
 
-void				philos_destroy(t_philo *philo, int num)
+void				philo_sleep(int id, int timeout)
 {
-	if (philo == NULL)
-		return ;
-	while (num-- > 0)
-		pthread_join(philos[num].thread, NULL);
-	free(philos);
+	philo_put_state_change(id, EVENT_SLEEPING);
+	usleep(timeout * 1000);
 }
 
-void				philo_eat(t_philo *philo)
+void				philo_think(int id)
 {
-	// take forks
-	// lock mutex
-	philo_put_state_change(philo, EVENT_EATING);
-	usleep(philo->timeout_eat * 1000);
-	// drop forks
-	// unlock mutex
+	philo_put_state_change(id, EVENT_THINKING);
 }
 
-void				philo_sleep(t_philo *philo)
+void				philo_die(int id)
 {
-	philo_put_state_change(philo, EVENT_SLEEPING);
-	usleep(philo->timeout_sleep * 1000);
+	philo_put_state_change(id, EVENT_DIED);
 }
 
-void				philo_think(t_philo *philo)
-{
-	philo_put_state_change(philo, EVENT_THINKING);
-	// search a fork
-}
+

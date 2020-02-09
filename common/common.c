@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:12:55 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/09 01:36:40 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/09 23:57:20 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_bool				parse_args(t_philo_args *philo_args, int argc, char **argv)
 	return (TRUE);
 }
 
-void				philo_put_state_change(t_philo *philo, t_philo_event event)  // not correct for philo3
+void				philo_put_state_change(int id, t_philo_event event)  // not correct for philo3
 {
 	struct timeval	tv;
 
@@ -42,7 +42,7 @@ void				philo_put_state_change(t_philo *philo, t_philo_event event)  // not corr
 	h_putnbr(tv.tv_sec);
 	h_putnbr(tv.tv_usec / 1000);
 	h_putchar(' ');
-	h_putnbr(philo->id);
+	h_putnbr(id);
 	if (event == EVENT_FORK)
 		h_putstr(" has taken fork\n");
 	else if (event == EVENT_EATING)

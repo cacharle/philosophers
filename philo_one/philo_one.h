@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2019/11/24 06:55:48 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/10 01:14:27 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,71 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <stdlib.h>
-
-typedef enum
-{
-	STATE_EATING,
-	STATE_THINKING,
-	STATE_SLEEPING,
-	STATE_TOOK_FORK,
-	STATE_DEAD
-}	t_philo_state;
-
+# include <pthread.h>
+# include "common.h"
 
 typedef struct
 {
-	int				id;
-	t_philo_state	state;
-	t_bool			alive;
-	int				forks[2];
-	int				finished_time;
-}	t_philo
+	t_bool			used;
+	pthread_mutex_t	mutex;
+}					t_fork;
 
-void print_state_change(int timestamp, t_philo_state state);
+// typedef struct
+// {
+// 	t_philo			*philos;
+// 	t_fork			*forks;
+// }					t_table;
+
+typedef struct s_philo	t_philo;
+
+typedef struct
+{
+	t_philo			*watched;
+	pthread_t		thread;
+}					t_watchdog;
+
+struct				s_philo
+{
+	int				id;
+	t_bool			alive;
+	t_watchdog		watchdog;
+	int				time_last_eat;
+	t_philo_state	state;
+	pthread_t		thread;
+};
+
+typedef struct
+{
+	t_philo_args	*args;
+	t_philo			*philo;
+	t_fork			*fork_left;
+	t_fork			*fork_right;
+}					t_routine_arg;
+tine_death_arg;
+
+/*
+** fork.c
+*/
+
+t_fork			*forks_new(int num);
+void			forks_destroy(t_fork *forks, int num);
+t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args);
+
+/*
+** philo.c
+*/
+
+t_philo			*philos_new(int num);
+void			philos_destroy(t_philo *philos, int num);
+t_bool			philos_start(t_philo *philos, t_routine_arg *routine_args, int num);
+void			philos_join(t_philo *philos, int num);
+t_bool			philos_starved(t_philo *philos, int num);
+
+/*
+** routine.c
+*/
+
+void			*routine_philo(t_routine_arg *arg);
+void			*routine_death(t_routine_arg *arg);
 
 #endif

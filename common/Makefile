@@ -5,32 +5,34 @@
 #                                                     +:+ +:+         +:+      #
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/02/09 03:31:28 by cacharle          #+#    #+#              #
-#    Updated: 2020/02/09 22:38:47 by cacharle         ###   ########.fr        #
+#    Created: 2020/02/09 22:39:08 by cacharle          #+#    #+#              #
+#    Updated: 2020/02/09 23:57:34 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-MAKE = make
-MAKE_ARGS = -no-print-child
+LIB = ar rcs
+RM = rm -rf
 
-PHILO_ONE_DIR = philo_one
-PHILO_TWO_DIR = philo_two
-PHILO_THREE_DIR = philo_three
+CC = gcc
+CCFLAGS = -Wall -Wextra -Werror
 
-help:
-	@echo "make common - build common lib"
-	@echo "make philo_one - compile philo_one"
-	@echo "make philo two - compile philo_one"
-	@echo "make philo three - compile philo_one"
+NAME = libphilocommon.a
 
-common:
-	$(MAKE) $(MAKE_ARGS) $(COMMON_DIR)
+SRC = $(shell find . -type f -name "*.c")
+OBJ = $(SRC:.c=.o)
 
-philo_one: common
-	$(MAKE) $(MAKE_ARGS) $(PHILO_ONE_DIR)
+all: $(NAME)
 
-philo_two: common
-	$(MAKE) $(MAKE_ARGS) $(PHILO_TWO_DIR)
+$(NAME): $(OBJ)
+	$(LIB) $(NAME) $(OBJ)
 
-philo_two: common
-	$(MAKE) $(MAKE_ARGS) $(PHILO_THREE_DIR)
+%.o: %.c
+	$(CC) $(CCFLAGS) -c -o $@ $<
+
+clean:
+	$(RM) $(OBJ)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all

@@ -6,25 +6,29 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2019/11/24 07:07:35 by cacharle         ###   ########.fr        #
+#    Updated: 2020/02/10 00:16:03 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 RM = rm -f
 
+COMMON_DIR = ../common
+
 CC = gcc
-CCFLAGS = -Wall -Wextra #-Werror
-LDFLAGS = -lpthread
+CCFLAGS = -I$(COMMON_DIR) -Wall -Wextra #-Werror
+LDFLAGS = -lpthread -L$(COMMON_DIR) -lphilocommon
 
 NAME = philo_one
-SRC = main.c
-OBJ = $(SRC:.c=.o)
 
+SRC = main.c \
+	  philo.c \
+	  fork.c
+OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $(OBJ)
+	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CCFLAGS) -c -o $@ $^
