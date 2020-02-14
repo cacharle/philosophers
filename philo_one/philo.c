@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 01:38:45 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 20:07:57 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_philo				*philos_new(int num)
 	return (philos);
 }
 
-void				philos_destroy(t_philo *philos, int num)
+void	philos_destroy(t_philo *philos, int num)
 {
 	(void)num;
 	if (philos == NULL)
@@ -62,7 +62,7 @@ void	philos_join(t_philo *philos, int num)
 		if (philos[i].alive)
 		{
 			philos[i].alive = FALSE;
-			/* pthread_join(philos[i].thread, NULL); */
+			pthread_join(philos[i].thread, NULL);
 		}
 	}
 }

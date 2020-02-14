@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 01:29:26 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 21:18:02 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_fork	*forks_new(int num)
 	i = -1;
 	while (++i < num)
 	{
-		if (pthread_mutex_init(&forks[num].mutex, NULL) != 0)
+		if (pthread_mutex_init(&forks[i].mutex, NULL) != 0)
 		{
 			forks_destroy(forks, i + 1);
 			return (NULL);
@@ -36,8 +36,9 @@ void	forks_destroy(t_fork *forks, int num)
 	while (num-- > 0)
 	{
 		forks[num].used = TRUE;
-		/* pthread_mutex_destroy(&forks[num].mutex); */
+		pthread_mutex_destroy(&forks[num].mutex);
 	}
+	free(forks);
 }
 
 t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args)
@@ -52,8 +53,8 @@ t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args
 	{
 		routine_args[i].args = args;
 		routine_args[i].philo = philos + i;
-		routine_args[i].fork_right = forks + i % args->philo_num;
-		routine_args[i].fork_left = forks + (i - 1) % args->philo_num;
+		routine_args[i].fork_left = forks + i % args->philo_num;
+		routine_args[i].fork_right = forks + (i + 1) % args->philo_num;
 	}
 	return (routine_args);
 }

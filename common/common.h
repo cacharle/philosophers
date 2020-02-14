@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 00:35:30 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 20:45:33 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ typedef struct
 	t_time			timeout_eat;
 	t_time			timeout_sleep;
 	int 			meal_num;
+	t_bool			all_alive;
+	pthread_mutex_t	mutex_stdout;
+	pthread_mutex_t	mutex_all_alive;
 }					t_philo_args;
 
 typedef void		(*t_philo_routine)(void *arg);
@@ -79,5 +82,6 @@ void				h_putchar(char c);
 void				h_putstr(char *s);
 void				*h_calloc(int count, int size);
 t_time				h_timeval_to_time(struct timeval *tp);
+t_time				h_time_now(void);
 
 #endif

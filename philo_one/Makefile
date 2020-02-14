@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/02/14 00:50:47 by cacharle         ###   ########.fr        #
+#    Updated: 2020/02/14 19:53:14 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ RM = rm -f
 COMMON_DIR = ../common
 
 CC = gcc
-CCFLAGS = -I$(COMMON_DIR) -Wall -Wextra #-Werror
+CCFLAGS = -g -I$(COMMON_DIR) -Wall -Wextra #-Werror
 LDFLAGS = -lpthread -L$(COMMON_DIR) -lphilocommon
 
 NAME = philo_one

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:22:49 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 01:37:31 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 21:07:54 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,15 @@ t_time				h_timeval_to_time(struct timeval *tp)
 {
 	t_time	t;
 
-	t = tp->tv_sec * 1000;
-	t += tp->tv_usec / 1000;
+	t = tp->tv_sec * 1000 + tp->tv_usec / 1000;
 	return (t);
+}
+
+t_time				h_time_now(void)
+{
+	struct timeval	tv;
+
+	if (gettimeofday(&tv, NULL) == -1)
+		return (-1);
+	return (h_timeval_to_time(&tv));
 }
