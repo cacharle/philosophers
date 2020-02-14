@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 20:23:15 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 21:37:45 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct
 t_fork			*forks_new(int num);
 void			forks_destroy(t_fork *forks, int num);
 t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args);
+void			fork_switch(t_fork *fork);
 
 /*
 ** philo.c
@@ -82,5 +83,14 @@ t_bool			philos_starved(t_philo *philos, int num);
 
 void			*routine_philo(void *void_arg);
 void			*routine_death(void *void_arg);
+
+/*
+** io.c
+*/
+
+void			io_eat(t_routine_arg *arg);
+void			io_think(t_routine_arg *arg);
+void			io_sleep(t_routine_arg *arg);
+void			io_die(t_routine_arg *arg);
 
 #endif

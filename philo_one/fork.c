@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 21:18:02 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 21:31:40 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,11 @@ t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args
 		routine_args[i].fork_right = forks + (i + 1) % args->philo_num;
 	}
 	return (routine_args);
+}
+
+void			fork_switch(t_fork *fork)
+{
+	pthread_mutex_lock(&fork->mutex);
+	fork->used = !fork->used;
+	pthread_mutex_unlock(&fork->mutex);
 }

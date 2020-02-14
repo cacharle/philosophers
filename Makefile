@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/09 03:31:28 by cacharle          #+#    #+#              #
-#    Updated: 2020/02/14 00:48:59 by cacharle         ###   ########.fr        #
+#    Updated: 2020/02/14 22:44:40 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,13 +29,13 @@ common:
 	$(MAKE) $(MAKE_ARGS) -C $(COMMON_DIR)
 
 .PHONY: philo_one
-philo_one: common
+philo_one:
 	$(MAKE) $(MAKE_ARGS) -C $(PHILO_ONE_DIR)
 
 .PHONY: philo_two
-philo_two: common
+philo_two:
 	$(MAKE) $(MAKE_ARGS) -C $(PHILO_TWO_DIR)
 
 .PHONY: philo_three
-philo_three: common
+philo_three:
 	$(MAKE) $(MAKE_ARGS) -C $(PHILO_THREE_DIR)
