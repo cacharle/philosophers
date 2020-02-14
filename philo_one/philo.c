@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/10 01:29:25 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 01:38:45 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,13 @@ void				philos_destroy(t_philo *philos, int num)
 
 t_bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
 {
-	t_routine_arg	*routine_arg;
 	int				i;
 
 	i = -1;
 	while (++i < num)
 	{
 		philos[i].alive = TRUE;
-		if (pthread_create(philos[i].thread, NULL, philo_one_routine, (void*)(routine_args + i)) == -1)
+		if (pthread_create(&philos[i].thread, NULL, &routine_philo, (void*)(routine_args + i)) == -1)
 			return (FALSE);
 	}
 	return (TRUE);
@@ -63,7 +62,7 @@ void	philos_join(t_philo *philos, int num)
 		if (philos[i].alive)
 		{
 			philos[i].alive = FALSE;
-			pthread_join(philos[i].thread, NULL);
+			/* pthread_join(philos[i].thread, NULL); */
 		}
 	}
 }
@@ -74,6 +73,7 @@ t_bool	philos_starved(t_philo *philos, int num)
 
 	i = -1;
 	while (++i < num)
+	{
 		if (!philos[i].alive)
 		{
 			i = -1;
@@ -81,5 +81,6 @@ t_bool	philos_starved(t_philo *philos, int num)
 				philos[i].alive = FALSE;
 			return (TRUE);
 		}
+	}
 	return (FALSE);
 }

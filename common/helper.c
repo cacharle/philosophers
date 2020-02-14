@@ -6,20 +6,20 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:22:49 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/10 01:15:05 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 01:37:31 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-int					h_strtoposint(char *s)
+long int			h_strtoposint(char *s)
 {
-	int	num;
+	long int	num;
 
 	if (*s < '0' || *s > '9')
 		return (-1);
 	num = 0;
-	while (*s != '\0' && *s > '0' && *s < '9')
+	while (*s >= '0' && *s <= '9')
 	{
 		num *= 10;
 		num += *s - '0';
@@ -40,12 +40,11 @@ int					h_strlen(char *s)
 	return (counter);
 }
 
-void				h_putnbr(unsigned long num)
+void				h_putnbr(unsigned long int num)
 {
-	if (num <= 0)
-		return ;
-	h_putnbr(num / 10);
-	h_putchar(num % 10 - '0');
+	if (num > 9)
+		h_putnbr(num / 10);
+	h_putchar(num % 10 + '0');
 }
 
 void				h_putchar(char c)
@@ -69,4 +68,13 @@ void				*h_calloc(int count, int size)
 	while (i-- > 0)
 		((unsigned char*)ptr)[i] = 0x0;
 	return (ptr);
+}
+
+t_time				h_timeval_to_time(struct timeval *tp)
+{
+	t_time	t;
+
+	t = tp->tv_sec * 1000;
+	t += tp->tv_usec / 1000;
+	return (t);
 }

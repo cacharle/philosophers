@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:12:55 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/09 23:57:20 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 01:32:37 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 t_bool				parse_args(t_philo_args *philo_args, int argc, char **argv)
 {
-	if (philo_args == NULL)
-		return (FALSE);
 	if (argc != 5 && argc != 6)
 		return (FALSE);
 	if ((philo_args->philo_num = h_strtoposint(argv[1])) == -1 ||

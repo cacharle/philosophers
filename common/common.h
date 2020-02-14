@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/09 23:56:48 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 00:35:30 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define TRUE 1
 
 typedef int			t_bool;
+typedef long int	t_time;
 
 typedef enum
 {
@@ -43,9 +44,9 @@ typedef enum
 typedef struct
 {
 	int				philo_num;
-	int 			timeout_death;
-	int				timeout_eat;
-	int				timeout_sleep;
+	t_time 			timeout_death;
+	t_time			timeout_eat;
+	t_time			timeout_sleep;
 	int 			meal_num;
 }					t_philo_args;
 
@@ -62,8 +63,8 @@ void				philo_put_state_change(int id, t_philo_event event);
 ** philo.c
 */
 
-void				philo_eat(int id, int timeout);
-void				philo_sleep(int id, int timeout);
+void				philo_eat(int id, t_time timeout);
+void				philo_sleep(int id, t_time timeout);
 void				philo_think(int id);
 void				philo_die(int id);
 
@@ -71,11 +72,12 @@ void				philo_die(int id);
 ** helper.c
 */
 
-int					h_strtoposint(char *s);
+long int			h_strtoposint(char *s);
 int					h_strlen(char *s);
 void				h_putnbr(unsigned long num);
 void				h_putchar(char c);
 void				h_putstr(char *s);
 void				*h_calloc(int count, int size);
+t_time				h_timeval_to_time(struct timeval *tp);
 
 #endif

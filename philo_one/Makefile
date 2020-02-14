@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/02/10 00:16:03 by cacharle         ###   ########.fr        #
+#    Updated: 2020/02/14 00:50:47 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,9 @@ NAME = philo_one
 
 SRC = main.c \
 	  philo.c \
-	  fork.c
+	  fork.c \
+	  routine.c
+
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

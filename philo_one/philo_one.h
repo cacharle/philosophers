@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/10 01:14:27 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/14 01:41:39 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ struct				s_philo
 	int				id;
 	t_bool			alive;
 	t_watchdog		watchdog;
-	int				time_last_eat;
+	t_time			time_last_eat;
 	t_philo_state	state;
 	pthread_t		thread;
 };
@@ -55,8 +55,8 @@ typedef struct
 	t_philo			*philo;
 	t_fork			*fork_left;
 	t_fork			*fork_right;
+	pthread_mutex_t	*mutex_stdout;
 }					t_routine_arg;
-tine_death_arg;
 
 /*
 ** fork.c
@@ -80,7 +80,7 @@ t_bool			philos_starved(t_philo *philos, int num);
 ** routine.c
 */
 
-void			*routine_philo(t_routine_arg *arg);
-void			*routine_death(t_routine_arg *arg);
+void			*routine_philo(void *void_arg);
+void			*routine_death(void *void_arg);
 
 #endif
