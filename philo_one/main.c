@@ -6,12 +6,11 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 20:52:02 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/15 00:57:24 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
 
 int	main(int argc, char **argv)
 {

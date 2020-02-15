@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:12:55 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 19:42:18 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/15 00:54:03 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,7 @@ t_bool				parse_args(t_philo_args *philo_args, int argc, char **argv)
 
 void				philo_put_state_change(int id, t_philo_event event)  // not correct for philo3
 {
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, NULL) == -1)
-		return ;
-	h_putnbr(tv.tv_sec);
-	h_putnbr(tv.tv_usec / 1000);
+	h_putnbr(h_time_now());
 	h_putchar(' ');
 	h_putnbr(id);
 	if (event == EVENT_FORK)

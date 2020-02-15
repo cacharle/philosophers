@@ -6,13 +6,13 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 20:07:57 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/15 01:01:51 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-t_philo				*philos_new(int num)
+t_philo	*philos_new(int num)
 {
 	int		i;
 	t_philo	*philos;
@@ -46,7 +46,8 @@ t_bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
 	while (++i < num)
 	{
 		philos[i].alive = TRUE;
-		if (pthread_create(&philos[i].thread, NULL, &routine_philo, (void*)(routine_args + i)) == -1)
+		if (pthread_create(&philos[i].thread, NULL,
+							&routine_philo, (void*)(routine_args + i)) == -1)
 			return (FALSE);
 	}
 	return (TRUE);

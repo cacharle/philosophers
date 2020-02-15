@@ -6,13 +6,13 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 21:31:40 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/15 01:23:25 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-t_fork	*forks_new(int num)
+t_fork			*forks_new(int num)
 {
 	int		i;
 	t_fork	*forks;
@@ -22,7 +22,7 @@ t_fork	*forks_new(int num)
 	i = -1;
 	while (++i < num)
 	{
-		if (pthread_mutex_init(&forks[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 		{
 			forks_destroy(forks, i + 1);
 			return (NULL);
@@ -31,22 +31,21 @@ t_fork	*forks_new(int num)
 	return (forks);
 }
 
-void	forks_destroy(t_fork *forks, int num)
+void			forks_destroy(t_fork *forks, int num)
 {
 	while (num-- > 0)
-	{
-		forks[num].used = TRUE;
-		pthread_mutex_destroy(&forks[num].mutex);
-	}
+		pthread_mutex_destroy(&forks[num]);
 	free(forks);
 }
 
-t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args)
+t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks,
+								t_philo_args *args)
 {
 	int				i;
 	t_routine_arg	*routine_args;
 
-	if ((routine_args = (t_routine_arg*)malloc(sizeof(t_routine_arg) * args->philo_num)) == NULL)
+	if ((routine_args = (t_routine_arg*)malloc(sizeof(t_routine_arg)
+									* args->philo_num)) == NULL)
 		return (NULL);
 	i = -1;
 	while (++i < args->philo_num)
@@ -57,11 +56,4 @@ t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks, t_philo_args *args
 		routine_args[i].fork_right = forks + (i + 1) % args->philo_num;
 	}
 	return (routine_args);
-}
-
-void			fork_switch(t_fork *fork)
-{
-	pthread_mutex_lock(&fork->mutex);
-	fork->used = !fork->used;
-	pthread_mutex_unlock(&fork->mutex);
 }

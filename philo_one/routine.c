@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 21:43:37 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/02/15 01:25:41 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,15 @@ void	*routine_philo(void *void_arg)
 		return (NULL);
 	io_think(arg);
 	while (arg->args->all_alive)
-		if (!arg->fork_left->used && !arg->fork_right->used)
-		{
-			fork_switch(arg->fork_left);
-			fork_switch(arg->fork_right);
-			io_eat(arg);
-			fork_switch(arg->fork_left);
-			fork_switch(arg->fork_right);
-			io_sleep(arg);
-			io_think(arg);
-		}
+	{
+		pthread_mutex_lock(arg->fork_left);
+		pthread_mutex_lock(arg->fork_right);
+		io_eat(arg);
+		pthread_mutex_unlock(arg->fork_right);
+		pthread_mutex_unlock(arg->fork_left);
+		io_sleep(arg);
+		io_think(arg);
+	}
 	pthread_join(thread_death, NULL);
 	return (NULL);
 }
