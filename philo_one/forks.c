@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork.c                                             :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/15 01:23:25 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/04/22 13:26:58 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-t_fork			*forks_new(int num)
+pthread_mutex_t	*forks_new(int num)
 {
-	int		i;
-	t_fork	*forks;
+	int				i;
+	pthread_mutex_t	*forks;
 
-	if ((forks = (t_fork*)malloc(sizeof(t_fork) * num)) == NULL)
+	if ((forks = (pthread_mutex_t*)malloc(
+			sizeof(pthread_mutex_t) * num)) == NULL)
 		return (NULL);
 	i = -1;
 	while (++i < num)
@@ -31,29 +32,31 @@ t_fork			*forks_new(int num)
 	return (forks);
 }
 
-void			forks_destroy(t_fork *forks, int num)
+void			forks_destroy(pthread_mutex_t *forks, int num)
 {
 	while (num-- > 0)
 		pthread_mutex_destroy(&forks[num]);
 	free(forks);
 }
 
-t_routine_arg	*forks_dispatch(t_philo *philos, t_fork *forks,
-								t_philo_args *args)
+t_routine_arg	*forks_dispatch(
+					t_philo *philos,
+					pthread_mutex_t *forks,
+					t_philo_conf *conf)
 {
 	int				i;
 	t_routine_arg	*routine_args;
 
-	if ((routine_args = (t_routine_arg*)malloc(sizeof(t_routine_arg)
-									* args->philo_num)) == NULL)
+	if ((routine_args = (t_routine_arg*)malloc(
+			sizeof(t_routine_arg) * conf->philo_num)) == NULL)
 		return (NULL);
 	i = -1;
-	while (++i < args->philo_num)
+	while (++i < conf->philo_num)
 	{
-		routine_args[i].args = args;
+		routine_args[i].conf = conf;
 		routine_args[i].philo = philos + i;
-		routine_args[i].fork_left = forks + i % args->philo_num;
-		routine_args[i].fork_right = forks + (i + 1) % args->philo_num;
+		routine_args[i].fork_left = forks + i % conf->philo_num;
+		routine_args[i].fork_right = forks + (i + 1) % conf->philo_num;
 	}
 	return (routine_args);
 }

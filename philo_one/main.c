@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/15 00:57:24 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/04/22 13:07:15 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	main(int argc, char **argv)
 {
-	t_philo_args	philo_args;
+	t_philo_conf	philo_args;
 	t_philo			*philos;
-	t_fork			*forks;
+	pthread_mutex_t	*forks;
 	t_routine_arg	*routine_args;
 
 	if (!parse_args(&philo_args, argc, argv))
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if ((routine_args = forks_dispatch(philos, forks, &philo_args)) == NULL)
 		return (1);
-	philo_args.all_alive = TRUE;
+	philo_args.all_alive = true;
 	pthread_mutex_init(&philo_args.mutex_all_alive, NULL);
 	pthread_mutex_init(&philo_args.mutex_stdout, NULL);
 	if (!philos_start(philos, routine_args, philo_args.philo_num))

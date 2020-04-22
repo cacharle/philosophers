@@ -6,40 +6,63 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 21:42:30 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/04/22 13:37:40 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void			io_eat(t_routine_arg *arg)
+static void	philo_put(int id, t_philo_event event)
 {
-	pthread_mutex_lock(&arg->args->mutex_stdout);
-	if (arg->args->all_alive)
-		philo_eat(arg->philo->id, arg->args->timeout_eat);
-	pthread_mutex_unlock(&arg->args->mutex_stdout);
+	h_putnbr(h_time_now());
+	h_putchar(' ');
+	h_putnbr(id);
+	if (event == EVENT_FORK)
+		h_putstr(" has taken fork\n");
+	else if (event == EVENT_EAT)
+		h_putstr(" is eating\n");
+	else if (event == EVENT_SLEEP)
+		h_putstr(" is sleeping\n");
+	else if (event == EVENT_THINK)
+		h_putstr(" is thinking\n");
+	else if (event == EVENT_DIE)
+		h_putstr(" died\n");
 }
 
-void			io_think(t_routine_arg *arg)
+void		io_eat(t_routine_arg *arg)
 {
-	pthread_mutex_lock(&arg->args->mutex_stdout);
-	if (arg->args->all_alive)
-		philo_think(arg->philo->id);
-	pthread_mutex_unlock(&arg->args->mutex_stdout);
+	if (!arg->conf->all_alive)
+		return ;
+	pthread_mutex_lock(&arg->conf->mutex_stdout);
+	philo_put(arg->philo->id, EVENT_EAT);
+	pthread_mutex_unlock(&arg->conf->mutex_stdout);
+	usleep(arg->conf->timeout_eat * 1000);
 }
 
-void			io_sleep(t_routine_arg *arg)
+void		io_think(t_routine_arg *arg)
 {
-	pthread_mutex_lock(&arg->args->mutex_stdout);
-	if (arg->args->all_alive)
-		philo_sleep(arg->philo->id, arg->args->timeout_sleep);
-	pthread_mutex_unlock(&arg->args->mutex_stdout);
+	if (!arg->conf->all_alive)
+		return ;
+	pthread_mutex_lock(&arg->conf->mutex_stdout);
+	philo_put(arg->philo->id, EVENT_THINK);
+	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }
 
-void			io_die(t_routine_arg *arg)
+void		io_sleep(t_routine_arg *arg)
 {
-	pthread_mutex_lock(&arg->args->mutex_stdout);
-	if (arg->args->all_alive)
-		philo_die(arg->philo->id);
-	pthread_mutex_unlock(&arg->args->mutex_stdout);
+	if (!arg->conf->all_alive)
+		return ;
+	pthread_mutex_lock(&arg->conf->mutex_stdout);
+	philo_put(arg->philo->id, EVENT_SLEEP);
+	pthread_mutex_unlock(&arg->conf->mutex_stdout);
+	usleep(arg->conf->timeout_sleep * 1000);
+}
+
+void		io_die(t_routine_arg *arg)
+{
+	if (!arg->conf->all_alive)
+		return ;
+	pthread_mutex_lock(&arg->conf->mutex_stdout);
+	philo_put(arg->philo->id, EVENT_DIE);
+	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }

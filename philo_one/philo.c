@@ -25,7 +25,7 @@ t_philo	*philos_new(int num)
 	while (++i < num)
 	{
 		philos[i].id = i + 1;
-		philos[i].alive = FALSE;
+		philos[i].alive = false;
 	}
 	return (philos);
 }
@@ -38,19 +38,19 @@ void	philos_destroy(t_philo *philos, int num)
 	free(philos);
 }
 
-t_bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
+bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
 {
 	int				i;
 
 	i = -1;
 	while (++i < num)
 	{
-		philos[i].alive = TRUE;
+		philos[i].alive = true;
 		if (pthread_create(&philos[i].thread, NULL,
 							&routine_philo, (void*)(routine_args + i)) == -1)
-			return (FALSE);
+			return (false);
 	}
-	return (TRUE);
+	return (true);
 }
 
 void	philos_join(t_philo *philos, int num)
@@ -62,13 +62,13 @@ void	philos_join(t_philo *philos, int num)
 	{
 		if (philos[i].alive)
 		{
-			philos[i].alive = FALSE;
+			philos[i].alive = false;
 			pthread_join(philos[i].thread, NULL);
 		}
 	}
 }
 
-t_bool	philos_starved(t_philo *philos, int num)
+bool	philos_starved(t_philo *philos, int num)
 {
 	int	i;
 
@@ -79,9 +79,9 @@ t_bool	philos_starved(t_philo *philos, int num)
 		{
 			i = -1;
 			while (++i < num)
-				philos[i].alive = FALSE;
-			return (TRUE);
+				philos[i].alive = false;
+			return (true);
 		}
 	}
-	return (FALSE);
+	return (false);
 }
