@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2020/04/22 13:26:58 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/27 09:26:12 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ pthread_mutex_t	*forks_new(int num)
 	int				i;
 	pthread_mutex_t	*forks;
 
-	if ((forks = (pthread_mutex_t*)malloc(
-			sizeof(pthread_mutex_t) * num)) == NULL)
+	if ((forks = malloc(num * sizeof(pthread_mutex_t))) == NULL)
 		return (NULL);
 	i = -1;
 	while (++i < num)
@@ -40,15 +39,14 @@ void			forks_destroy(pthread_mutex_t *forks, int num)
 }
 
 t_routine_arg	*forks_dispatch(
-					t_philo *philos,
-					pthread_mutex_t *forks,
-					t_philo_conf *conf)
+	t_philo *philos,
+	pthread_mutex_t *forks,
+	t_philo_conf *conf)
 {
 	int				i;
 	t_routine_arg	*routine_args;
 
-	if ((routine_args = (t_routine_arg*)malloc(
-			sizeof(t_routine_arg) * conf->philo_num)) == NULL)
+	if ((routine_args = malloc(conf->philo_num * sizeof(t_routine_arg))) == NULL)
 		return (NULL);
 	i = -1;
 	while (++i < conf->philo_num)

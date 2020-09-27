@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/04/22 13:26:06 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/27 10:42:58 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <stdbool.h>
+# include <limits.h>
 
 typedef long int	t_time;
 
@@ -59,8 +60,6 @@ typedef struct		s_routine_arg
 	pthread_mutex_t	*mutex_stdout;
 }					t_routine_arg;
 
-typedef void		(*t_philo_routine)(void *arg);
-
 /*
 ** forks.c
 */
@@ -83,14 +82,13 @@ bool					philos_start(
 							t_routine_arg *routine_args,
 							int num);
 void					philos_join(t_philo *philos, int num);
-bool					philos_starved(t_philo *philos, int num);
 
 /*
 ** routine.c
 */
 
-void					*routine_philo(void *void_arg);
-void					*routine_death(void *void_arg);
+void					*routine_philo(t_routine_arg *arg);
+void					*routine_death(t_routine_arg *arg);
 
 /*
 ** io.c
@@ -114,11 +112,10 @@ bool					parse_args(
 ** helper.c
 */
 
-long int				h_atoi_strict_unsigned(char *s);
+long int				h_atou_strict(char *s);
 void					h_putnbr(unsigned long num);
 void					h_putchar(char c);
 void					h_putstr(char *s);
-void					*h_calloc(int count, int size);
 t_time					h_time_now(void);
 
 #endif

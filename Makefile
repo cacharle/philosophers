@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/09 03:31:28 by cacharle          #+#    #+#              #
-#    Updated: 2020/04/22 13:41:57 by charles          ###   ########.fr        #
+#    Updated: 2020/09/27 09:04:22 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ PHILO_THREE_DIR = philo_three
 
 help:
 	@echo "make philo_one    - compile philo_one"
-	@echo "make philo_two    - compile philo_one"
-	@echo "make philo_three  - compile philo_one"
+	@echo "make philo_two    - compile philo_two"
+	@echo "make philo_three  - compile philo_three"
 
 .PHONY: philo_one
 philo_one:

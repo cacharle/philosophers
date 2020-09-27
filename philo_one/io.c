@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/04/22 13:37:40 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/27 10:33:29 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,19 @@ static void	philo_put(int id, t_philo_event event)
 
 void		io_eat(t_routine_arg *arg)
 {
-	if (!arg->conf->all_alive)
-		return ;
-	pthread_mutex_lock(&arg->conf->mutex_stdout);
-	philo_put(arg->philo->id, EVENT_EAT);
-	pthread_mutex_unlock(&arg->conf->mutex_stdout);
-	usleep(arg->conf->timeout_eat * 1000);
+	int	eat_counter;
+
+	eat_counter = 0;
+	while (eat_counter < arg->conf->meal_num)
+	{
+		if (!arg->conf->all_alive)
+			return ;
+		pthread_mutex_lock(&arg->conf->mutex_stdout);
+		philo_put(arg->philo->id, EVENT_EAT);
+		pthread_mutex_unlock(&arg->conf->mutex_stdout);
+		usleep(arg->conf->timeout_eat * 1000);
+		eat_counter++;
+	}
 }
 
 void		io_think(t_routine_arg *arg)
