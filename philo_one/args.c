@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   common.c                                           :+:      :+:    :+:   */
+/*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:12:55 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/27 10:36:31 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:24:53 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool				parse_args(t_philo_conf *philo_args, int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
-		return (false);
+		return h_err(false, "Usage: %s philosophers_num death_timeout eat_timeout sleep_timeout", argv[0]);
 	if ((philo_args->philo_num = h_atou_strict(argv[1])) == -1
 		|| (philo_args->timeout_death = h_atou_strict(argv[2])) == -1
 		|| (philo_args->timeout_eat = h_atou_strict(argv[3])) == -1

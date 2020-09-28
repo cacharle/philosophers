@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/27 10:35:32 by charles          ###   ########.fr        #
+#    Updated: 2020/09/28 14:12:28 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC = main.c \
 	  forks.c \
 	  routine.c \
 	  io.c \
-	  common.c \
+	  args.c \
 	  helper.c
 
 OBJDIR = obj

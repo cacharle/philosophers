@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/27 10:36:40 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:59:59 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	main(int argc, char **argv)
 
 	if (!parse_args(&philo_args, argc, argv))
 		return (1);
+	if (philo_args.philo_num < 2)
+		return (h_err(1, "Error: there should be at least 2 philosophers"));
 	if ((forks = forks_new(philo_args.philo_num)) == NULL)
 		return (1);
 	if ((philos = philos_new(philo_args.philo_num)) == NULL)

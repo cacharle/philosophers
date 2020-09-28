@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/27 10:42:58 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/28 14:22:57 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <pthread.h>
 # include <stdbool.h>
 # include <limits.h>
+# include <stdarg.h>
 
 typedef long int	t_time;
 
@@ -116,6 +117,7 @@ long int				h_atou_strict(char *s);
 void					h_putnbr(unsigned long num);
 void					h_putchar(char c);
 void					h_putstr(char *s);
+int						h_err(int ret, const char *format, ...);
 t_time					h_time_now(void);
 
 #endif
