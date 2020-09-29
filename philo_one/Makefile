@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/28 14:12:28 by cacharle         ###   ########.fr        #
+#    Updated: 2020/09/29 11:30:07 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,17 +18,11 @@ LDFLAGS = -lpthread
 
 NAME = philo_one
 
-SRC = main.c \
-	  philo.c \
-	  forks.c \
-	  routine.c \
-	  io.c \
-	  args.c \
-	  helper.c
-
+SRCDIR = src
 OBJDIR = obj
 
-OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
+SRC = $(shell find $(SRCDIR) -type f -name '*.c')
+OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: prebuild $(NAME)
 
@@ -38,7 +32,7 @@ prebuild:
 $(NAME): $(OBJ)
 	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
-$(OBJDIR)/%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
 clean:

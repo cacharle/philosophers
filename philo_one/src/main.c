@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/28 14:59:59 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/29 13:26:07 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	main(int argc, char **argv)
 
 	if (!parse_args(&philo_args, argc, argv))
 		return (1);
-	if (philo_args.philo_num < 2)
-		return (h_err(1, "Error: there should be at least 2 philosophers"));
+	if (philo_args.philo_num == 0)
+		return (0);
 	if ((forks = forks_new(philo_args.philo_num)) == NULL)
 		return (1);
 	if ((philos = philos_new(philo_args.philo_num)) == NULL)
@@ -34,6 +34,8 @@ int	main(int argc, char **argv)
 	pthread_mutex_init(&philo_args.mutex_stdout, NULL);
 	if (!philos_start(philos, routine_args, philo_args.philo_num))
 		return (1);
+	/* pthread_mutex_lock(philo_args.mutex_all_alive); */
+	/* pthread_mutex_lock(philo_args.mutex_all_alive); */
 	while (philo_args.all_alive)
 		;
 	philos_join(philos, philo_args.philo_num);

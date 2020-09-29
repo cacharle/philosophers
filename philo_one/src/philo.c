@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/27 10:42:25 by charles          ###   ########.fr       */
+/*   Updated: 2020/09/29 13:29:49 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	philos_join(t_philo *philos, int num)
 		if (philos[i].alive)
 		{
 			philos[i].alive = false;
-			pthread_join(philos[i].thread, NULL);
+			pthread_detach(philos[i].thread);
 		}
 	}
 }
