@@ -6,35 +6,38 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/02/14 23:37:39 by cacharle         ###   ########.fr        #
+#    Updated: 2020/09/29 15:21:43 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 RM = rm -f
 
-COMMON_DIR = ../common
+# COMMON_DIR = ../common
 
 CC = gcc
-CCFLAGS = -I$(COMMON_DIR) -Wall -Wextra #-Werror
-LDFLAGS = -lpthread -L$(COMMON_DIR) -lphilocommon
+CCFLAGS = -Wall -Wextra #-I$(COMMON_DIR) -Werror
+LDFLAGS = -lpthread #-L$(COMMON_DIR) -lphilocommon
 
 NAME = philo_two
 
-SRC = main.c \
-	  io.c \
-	  routine.c
+SRCDIR = src
+OBJDIR = obj
 
-OBJ = $(SRC:.c=.o)
+SRC = $(shell find $(SRCDIR) -type f -name '*.c')
+OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-all: $(NAME)
+all: prebuild $(NAME)
 
-$(NAME): common_all $(OBJ)
+prebuild:
+	@mkdir -p $(OBJDIR)
+
+$(NAME): $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $(OBJ)
 
-%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
-clean: common_fclean
+clean:
 	$(RM) $(OBJ)
 
 fclean: clean
@@ -42,8 +45,8 @@ fclean: clean
 
 re: fclean all
 
-common_all:
-	make -C $(COMMON_DIR) all
-
-common_fclean:
-	make -C $(COMMON_DIR) fclean
+# common_all:
+# 	make -C $(COMMON_DIR) all
+#
+# common_fclean:
+# 	make -C $(COMMON_DIR) fclean

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:45:23 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/15 00:34:26 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/29 15:27:05 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int main(int argc, char **argv)
 
 	if (!parse_args(&philo_args, argc, argv))
 		return (1);
+	sem_unlink("philo_two");
 	forks = sem_open("philo_two", O_CREAT, 0700, philo_args.philo_num);
 	if (forks == SEM_FAILED)
 		return (1);
