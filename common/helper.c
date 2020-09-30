@@ -6,31 +6,13 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:22:49 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/15 00:53:47 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 07:57:21 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-long int			h_strtoposint(char *s)
-{
-	long int	num;
-
-	if (*s < '0' || *s > '9')
-		return (-1);
-	num = 0;
-	while (*s >= '0' && *s <= '9')
-	{
-		num *= 10;
-		num += *s - '0';
-		s++;
-	}
-	if (*s != '\0')
-		return (-1);
-	return num;
-}
-
-int					h_strlen(char *s)
+size_t		h_strlen(char *s)
 {
 	int	counter;
 
@@ -40,49 +22,72 @@ int					h_strlen(char *s)
 	return (counter);
 }
 
-void				h_putnbr(unsigned long int num)
+long int	h_atou_strict(char *s)
+{
+	long int	num;
+	char		*origin;
+
+	origin = s;
+	if (*s < '0' || *s > '9')
+		return (h_err(-1, "Error: %s: is not a number", origin));
+	num = 0;
+	while (*s >= '0' && *s <= '9')
+	{
+		num *= 10;
+		if (num > UINT_MAX)
+			return (h_err(-1, "Error: %s: is too big", origin));
+		num += *s - '0';
+		if (num > UINT_MAX)
+			return (h_err(-1, "Error: %s: is too big", origin));
+		s++;
+	}
+	if (*s != '\0')
+		return (h_err(-1, "Error: %s: is not a number", origin));
+	return (num);
+}
+
+void		h_putnbr(unsigned long int num)
 {
 	if (num > 9)
 		h_putnbr(num / 10);
 	h_putchar(num % 10 + '0');
 }
 
-void				h_putchar(char c)
+void		h_putchar(char c)
 {
 	write(STDOUT_FILENO, &c, 1);
 }
 
-void				h_putstr(char *s)
+void		h_putstr(char *s)
 {
 	write(STDOUT_FILENO, s, h_strlen(s));
 }
 
-void				*h_calloc(int count, int size)
+int			h_err(int ret, const char *format, char *str)
 {
-	int		i;
-	void	*ptr;
-
-	if ((ptr = malloc(count * size)) == NULL)
-		return (NULL);
-	i = count * size;
-	while (i-- > 0)
-		((unsigned char*)ptr)[i] = 0x0;
-	return (ptr);
+	while (*format != '\0')
+	{
+		if (format[0] == '%' && format[1] == 's')
+		{
+			if (str != NULL)
+				write(STDERR_FILENO, str, h_strlen(str));
+			format += 2;
+		}
+		else
+		{
+			write(STDERR_FILENO, format, 1);
+			format++;
+		}
+	}
+	write(STDERR_FILENO, "\n", 1);
+	return (ret);
 }
 
-t_time				h_timeval_to_time(struct timeval *tp)
-{
-	t_time	t;
-
-	t = tp->tv_sec * 1000 + tp->tv_usec / 1000;
-	return (t);
-}
-
-t_time				h_time_now(void)
+t_time		h_time_now(void)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (-1);
-	return (h_timeval_to_time(&tv));
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }

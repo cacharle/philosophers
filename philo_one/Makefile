@@ -6,15 +6,15 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/29 11:30:07 by cacharle         ###   ########.fr        #
+#    Updated: 2020/09/30 07:45:51 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 RM = rm -f
 
 CC = gcc
-CCFLAGS = -Wall -Wextra #-Werror
-LDFLAGS = -lpthread
+CCFLAGS = -I$(COMMONDIR) -Wall -Wextra #-Werror
+LDFLAGS = -lpthread -L$(COMMONDIR) -lphilocommon
 
 NAME = philo_one
 
@@ -24,7 +24,7 @@ OBJDIR = obj
 SRC = $(shell find $(SRCDIR) -type f -name '*.c')
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-all: prebuild $(NAME)
+all: prebuild common_all $(NAME)
 
 prebuild:
 	@mkdir -pv $(OBJDIR)
@@ -35,7 +35,7 @@ $(NAME): $(OBJ)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
-clean:
+clean: common_clean
 	$(RM) $(OBJ)
 
 fclean: clean
@@ -43,4 +43,10 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all prebuild clean fclean re
+common_all:
+	$(MAKE) -C $(COMMONDIR) all
+
+common_clean:
+	$(MAKE) -C $(COMMONDIR) clean
+
+.PHONY: all prebuild clean fclean re common_all common_clean

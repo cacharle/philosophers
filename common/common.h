@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/14 20:45:33 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 07:57:32 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,73 +15,50 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <limits.h>
 
-# define FALSE 0
-# define TRUE 1
-
-typedef int			t_bool;
 typedef long int	t_time;
 
 typedef enum
 {
-	PSTATE_EATING = 0,
-	PSTATE_SLEEPING,
-	PSTATE_THINKING,
-	PSTATE_NUM
-}	t_philo_state;
-
-typedef enum
-{
 	EVENT_FORK,
-	EVENT_EATING,
-	EVENT_SLEEPING,
-	EVENT_THINKING,
-	EVENT_DIED
-}	t_philo_event;
+	EVENT_EAT,
+	EVENT_SLEEP,
+	EVENT_THINK,
+	EVENT_DIE
+}					t_philo_event;
 
 typedef struct
 {
-	int				philo_num;
+	long int		philo_num;
 	t_time 			timeout_death;
 	t_time			timeout_eat;
 	t_time			timeout_sleep;
-	int 			meal_num;
-	t_bool			all_alive;
-	pthread_mutex_t	mutex_stdout;
-	pthread_mutex_t	mutex_all_alive;
+	long int		meal_num;
 }					t_philo_args;
 
-typedef void		(*t_philo_routine)(void *arg);
+typedef void		(*t_routine)(void *arg);
 
 /*
 ** common.c
 */
 
-t_bool				parse_args(t_philo_args *philo_args, int argc, char **argv);
-void				philo_put_state_change(int id, t_philo_event event);
-
-/*
-** philo.c
-*/
-
-void				philo_eat(int id, t_time timeout);
-void				philo_sleep(int id, t_time timeout);
-void				philo_think(int id);
-void				philo_die(int id);
+bool				parse_args(t_philo_args *args, int argc, char **argv);
+void				philo_put(size_t id, t_philo_event event);
 
 /*
 ** helper.c
 */
 
-long int			h_strtoposint(char *s);
-int					h_strlen(char *s);
+long int			h_atou_strict(char *s);
+size_t				h_strlen(char *s);
 void				h_putnbr(unsigned long num);
 void				h_putchar(char c);
 void				h_putstr(char *s);
-void				*h_calloc(int count, int size);
-t_time				h_timeval_to_time(struct timeval *tp);
 t_time				h_time_now(void);
+int					h_err(int ret, const char *format, char *str);
 
 #endif
