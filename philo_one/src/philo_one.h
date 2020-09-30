@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 07:48:36 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:16:11 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,27 @@
 
 # include "common.h"
 
-// typedef long int	t_time;
-
-// typedef enum
-// {
-// 	EVENT_FORK,
-// 	EVENT_EAT,
-// 	EVENT_SLEEP,
-// 	EVENT_THINK,
-// 	EVENT_DIE
-// }					t_philo_event;
+/*
+** t_philo_args with more fields at the end
+*/
 
 typedef struct
 {
-	t_philo_args	args;
+	long int		philo_num;
+	t_time 			timeout_death;
+	t_time			timeout_eat;
+	t_time			timeout_sleep;
+	long int		meal_num;
 	bool			all_alive;
-	pthread_mutex_t	mutex_stdout;
+	pthread_mutex_t	mutex_stdout; // duplication in t_routine_arg
 	pthread_mutex_t	mutex_all_alive;
 }					t_philo_conf;
 
 typedef struct		s_philo
 {
 	int				id;
-	bool			alive;
-	t_time			time_last_eat;
 	pthread_t		thread;
+	t_time			time_last_eat;
 }					t_philo;
 
 typedef struct		s_routine_arg
@@ -93,9 +89,10 @@ void					*routine_death(t_routine_arg *arg);
 ** io.c
 */
 
+void					io_take_fork(t_routine_arg *arg, pthread_mutex_t *fork);
 void					io_eat(t_routine_arg *arg);
 void					io_think(t_routine_arg *arg);
-void					io_sleep(t_routine_arg *arg);
+void					io_sleep(t_routine_arg *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left);
 void					io_die(t_routine_arg *arg);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/29 14:30:06 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:17:21 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,11 @@ void	*routine_philo(t_routine_arg *arg)
 	io_think(arg);
 	while (arg->conf->all_alive)
 	{
-		pthread_mutex_lock(arg->fork_left);
-		pthread_mutex_lock(arg->fork_right);
+		io_take_fork(arg, arg->fork_left);
+		io_take_fork(arg, arg->fork_right);
 		arg->philo->time_last_eat = h_time_now();
 		io_eat(arg);
-		io_sleep(arg);
-		pthread_mutex_unlock(arg->fork_right);
-		pthread_mutex_unlock(arg->fork_left);
-		usleep(arg->conf->timeout_sleep * 1000);
+		io_sleep(arg, arg->fork_right, arg->fork_left);
 		io_think(arg);
 	}
 	pthread_join(thread_death, NULL);

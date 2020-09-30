@@ -6,11 +6,14 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/30 07:45:51 by cacharle         ###   ########.fr        #
+#    Updated: 2020/09/30 08:00:20 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 RM = rm -f
+MAKE = make --no-print-directory
+
+COMMONDIR = ../common
 
 CC = gcc
 CCFLAGS = -I$(COMMONDIR) -Wall -Wextra #-Werror

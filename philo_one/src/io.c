@@ -6,28 +6,23 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 07:49:22 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:16:54 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-/* static void	philo_put(int id, t_philo_event event) */
-/* { */
-/* 	h_putnbr(h_time_now()); */
-/* 	h_putchar(' '); */
-/* 	h_putnbr(id); */
-/* 	if (event == EVENT_FORK) */
-/* 		h_putstr(" has taken fork\n"); */
-/* 	else if (event == EVENT_EAT) */
-/* 		h_putstr(" is eating\n"); */
-/* 	else if (event == EVENT_SLEEP) */
-/* 		h_putstr(" is sleeping\n"); */
-/* 	else if (event == EVENT_THINK) */
-/* 		h_putstr(" is thinking\n"); */
-/* 	else if (event == EVENT_DIE) */
-/* 		h_putstr(" died\n"); */
-/* } */
+void		io_take_fork(t_routine_arg *arg, pthread_mutex_t *fork)
+{
+	pthread_mutex_lock(fork);
+	pthread_mutex_lock(&arg->conf->mutex_all_alive);
+	if (!arg->conf->all_alive)
+		return ;
+	pthread_mutex_lock(&arg->conf->mutex_stdout);
+	philo_put(arg->philo->id, EVENT_FORK);
+	pthread_mutex_unlock(&arg->conf->mutex_stdout);
+	pthread_mutex_unlock(&arg->conf->mutex_all_alive);
+}
 
 void		io_eat(t_routine_arg *arg)
 {
@@ -59,7 +54,7 @@ void		io_think(t_routine_arg *arg)
 	pthread_mutex_unlock(&arg->conf->mutex_all_alive);
 }
 
-void		io_sleep(t_routine_arg *arg)
+void		io_sleep(t_routine_arg *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left)
 {
 	pthread_mutex_lock(&arg->conf->mutex_all_alive);
 	if (!arg->conf->all_alive)
@@ -68,7 +63,9 @@ void		io_sleep(t_routine_arg *arg)
 	philo_put(arg->philo->id, EVENT_SLEEP);
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 	pthread_mutex_unlock(&arg->conf->mutex_all_alive);
-	/* usleep(arg->conf->timeout_sleep * 1000); */
+	pthread_mutex_unlock(fork_right);
+	pthread_mutex_unlock(fork_left);
+	usleep(arg->conf->timeout_sleep * 1000);
 }
 
 void		io_die(t_routine_arg *arg)
