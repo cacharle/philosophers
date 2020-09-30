@@ -6,31 +6,27 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2020/02/15 00:35:26 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:41:23 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-void	*routine_philo(void *void_arg)
+void	*routine_philo(t_routine_arg *arg)
 {
-	t_routine_arg	*arg;
 	pthread_t		thread_death;
 
-	arg = (t_routine_arg*)void_arg;
 	io_think(arg);
-	if (!arg->args->all_alive)
+	if (!arg->conf->all_alive)
 		return (NULL);
 	arg->time_last_eat = h_time_now();
-	if (pthread_create(&thread_death, NULL, routine_death, arg) != 0)
+	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);
-	while (arg->args->all_alive)
+	while (arg->conf->all_alive)
 	{
-		sem_wait(arg->forks);
-		sem_wait(arg->forks);
+		io_take_fork(arg);
+		io_take_fork(arg);
 		io_eat(arg);
-		sem_post(arg->forks);
-		sem_post(arg->forks);
 		arg->time_last_eat = h_time_now();
 		io_sleep(arg);
 		io_think(arg);
@@ -39,36 +35,34 @@ void	*routine_philo(void *void_arg)
 	return (NULL);
 }
 
-void	*routine_death(void *void_arg)
+void	*routine_death(t_routine_arg *arg)
 {
-	t_routine_arg	*arg;
 	t_time			current;
 
-	arg = (t_routine_arg*)void_arg;
 	current = h_time_now();
-	while (arg->args->all_alive &&
-			current - arg->time_last_eat < arg->args->timeout_death)
+	while (arg->conf->all_alive &&
+			current - arg->time_last_eat < arg->conf->timeout_death)
 		current = h_time_now();
+	pthread_mutex_lock(&arg->conf->mutex_all_alive);
 	io_die(arg);
-	pthread_mutex_lock(&arg->args->mutex_all_alive);
-	arg->args->all_alive = FALSE;
-	pthread_mutex_unlock(&arg->args->mutex_all_alive);
+	arg->conf->all_alive = false;
+	pthread_mutex_unlock(&arg->conf->mutex_all_alive);
 	return (NULL);
 }
 
-t_routine_arg	*routine_args_create(t_philo_args *philo_args, sem_t *forks)
+t_routine_arg	*routine_args_create(t_philo_conf *conf, sem_t *forks)
 {
 	int				i;
-	t_routine_arg	*routine_args;
+	t_routine_arg	*routine_conf;
 
-	if ((routine_args = malloc(sizeof(t_routine_arg) * philo_args->philo_num)) == NULL)
+	if ((routine_conf = malloc(sizeof(t_routine_arg) * conf->philo_num)) == NULL)
 		return (NULL);
 	i = -1;
-	while (++i < philo_args->philo_num)
+	while (++i < conf->philo_num)
 	{
-		routine_args[i].id = i + 1;
-		routine_args[i].forks = forks;
-		routine_args[i].args = philo_args;
+		routine_conf[i].id = i + 1;
+		routine_conf[i].forks = forks;
+		routine_conf[i].conf = conf;
 	}
-	return (routine_args);
+	return (routine_conf);
 }

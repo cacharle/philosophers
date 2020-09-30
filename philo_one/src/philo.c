@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 08:10:55 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:38:48 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
 	while (++i < num)
 	{
 		if (pthread_create(&philos[i].thread, NULL,
-							(void *(*)(void*))routine_philo, (void*)(routine_args + i)) == -1)
+							(t_routine)routine_philo, (void*)(routine_args + i)) == -1)
 			return (false);
 	}
 	return (true);

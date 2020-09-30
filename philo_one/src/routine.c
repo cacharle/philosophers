@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 08:17:21 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:38:59 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*routine_philo(t_routine_arg *arg)
 	if (!arg->conf->all_alive)
 		return (NULL);
 	arg->philo->time_last_eat = h_time_now();
-	if (pthread_create(&thread_death, NULL, (void *(*)(void*))routine_death, arg) != 0)
+	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);
 	io_think(arg);
 	while (arg->conf->all_alive)

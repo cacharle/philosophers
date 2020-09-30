@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 07:57:32 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 08:40:38 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct
 	long int		meal_num;
 }					t_philo_args;
 
-typedef void		(*t_routine)(void *arg);
+typedef void		*(*t_routine)(void *arg);
 
 /*
 ** common.c
