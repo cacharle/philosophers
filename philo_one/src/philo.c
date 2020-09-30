@@ -6,28 +6,33 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 08:38:48 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 09:48:12 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-t_philo	*philos_new(int num)
+t_philo	*philos_new(t_philo_conf *conf, pthread_mutex_t *forks)
 {
 	int		i;
 	t_philo	*philos;
 
-	if (num < 0)
+	if (conf->philo_num < 0)
 		return (NULL);
-	if ((philos = malloc(num * sizeof(t_philo))) == NULL)
+	if ((philos = malloc(conf->philo_num * sizeof(t_philo))) == NULL)
 		return (NULL);
 	i = -1;
-	while (++i < num)
+	while (++i < conf->philo_num)
+	{
 		philos[i].id = i + 1;
+		philos[i].conf = conf;
+		philos[i].fork_left = forks + i % conf->philo_num;
+		philos[i].fork_right = forks + (i + 1) % conf->philo_num;
+	}
 	return (philos);
 }
 
-bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
+bool	philos_start(t_philo *philos, int num)
 {
 	int				i;
 
@@ -35,7 +40,7 @@ bool	philos_start(t_philo *philos, t_routine_arg *routine_args, int num)
 	while (++i < num)
 	{
 		if (pthread_create(&philos[i].thread, NULL,
-							(t_routine)routine_philo, (void*)(routine_args + i)) == -1)
+							(t_routine)routine_philo, (void*)(philos + i)) == -1)
 			return (false);
 	}
 	return (true);

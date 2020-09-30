@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 08:16:11 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 09:50:02 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ typedef struct
 	t_time			timeout_sleep;
 	long int		meal_num;
 	bool			all_alive;
-	pthread_mutex_t	mutex_stdout; // duplication in t_routine_arg
-	pthread_mutex_t	mutex_all_alive;
+	pthread_mutex_t	mutex_stdout;
 }					t_philo_conf;
 
 typedef struct		s_philo
@@ -44,16 +43,11 @@ typedef struct		s_philo
 	int				id;
 	pthread_t		thread;
 	t_time			time_last_eat;
-}					t_philo;
-
-typedef struct		s_routine_arg
-{
 	t_philo_conf	*conf;
-	t_philo			*philo;
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	*mutex_stdout;
-}					t_routine_arg;
+}					t_philo;
 
 /*
 ** forks.c
@@ -61,38 +55,31 @@ typedef struct		s_routine_arg
 
 pthread_mutex_t			*forks_new(int num);
 void					forks_destroy(pthread_mutex_t *forks, int num);
-t_routine_arg			*forks_dispatch(
-							t_philo *philos,
-							pthread_mutex_t *forks,
-							t_philo_conf *conf);
 
 /*
 ** philo.c
 */
 
-t_philo					*philos_new(int num);
+t_philo					*philos_new(t_philo_conf *conf, pthread_mutex_t *forks);
 void					philos_destroy(t_philo *philos, int num);
-bool					philos_start(
-							t_philo *philos,
-							t_routine_arg *routine_args,
-							int num);
+bool					philos_start(t_philo *philos, int num);
 void					philos_detach(t_philo *philos, int num);
 
 /*
 ** routine.c
 */
 
-void					*routine_philo(t_routine_arg *arg);
-void					*routine_death(t_routine_arg *arg);
+void					*routine_philo(t_philo *arg);
+void					*routine_death(t_philo *arg);
 
 /*
 ** io.c
 */
 
-void					io_take_fork(t_routine_arg *arg, pthread_mutex_t *fork);
-void					io_eat(t_routine_arg *arg);
-void					io_think(t_routine_arg *arg);
-void					io_sleep(t_routine_arg *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left);
-void					io_die(t_routine_arg *arg);
+void					io_take_fork(t_philo *arg, pthread_mutex_t *fork);
+void					io_eat(t_philo *arg);
+void					io_think(t_philo *arg);
+void					io_sleep(t_philo *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left);
+void					io_die(t_philo *arg);
 
 #endif
