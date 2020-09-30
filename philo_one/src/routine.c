@@ -21,15 +21,15 @@ void	*routine_philo(t_philo *arg)
 	arg->time_last_eat = h_time_now();
 	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);
-	io_think(arg);
+	event_think(arg);
 	while (arg->conf->all_alive)
 	{
-		io_take_fork(arg, arg->fork_left);
-		io_take_fork(arg, arg->fork_right);
+		event_take_fork(arg, arg->fork_left);
+		event_take_fork(arg, arg->fork_right);
 		arg->time_last_eat = h_time_now();
-		io_eat(arg);
-		io_sleep(arg, arg->fork_right, arg->fork_left);
-		io_think(arg);
+		event_eat(arg);
+		event_sleep(arg, arg->fork_right, arg->fork_left);
+		event_think(arg);
 	}
 	pthread_join(thread_death, NULL);
 	return (NULL);
@@ -45,6 +45,6 @@ void	*routine_death(t_philo *arg)
 		current = h_time_now();
 	if (!arg->conf->all_alive)
 		return (NULL);
-	io_die(arg);
+	event_die(arg);
 	return (NULL);
 }

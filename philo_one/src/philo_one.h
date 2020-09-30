@@ -76,10 +76,10 @@ void					*routine_death(t_philo *arg);
 ** io.c
 */
 
-void					io_take_fork(t_philo *arg, pthread_mutex_t *fork);
-void					io_eat(t_philo *arg);
-void					io_think(t_philo *arg);
-void					io_sleep(t_philo *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left);
-void					io_die(t_philo *arg);
+void					event_take_fork(t_philo *arg, pthread_mutex_t *fork);
+void					event_eat(t_philo *arg);
+void					event_think(t_philo *arg);
+void					event_sleep(t_philo *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left);
+void					event_die(t_philo *arg);
 
 #endif

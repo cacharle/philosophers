@@ -6,21 +6,11 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:22:49 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 07:57:21 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:15:14 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
-
-size_t		h_strlen(char *s)
-{
-	int	counter;
-
-	counter = 0;
-	while (s[counter])
-		counter++;
-	return (counter);
-}
 
 long int	h_atou_strict(char *s)
 {
@@ -44,43 +34,6 @@ long int	h_atou_strict(char *s)
 	if (*s != '\0')
 		return (h_err(-1, "Error: %s: is not a number", origin));
 	return (num);
-}
-
-void		h_putnbr(unsigned long int num)
-{
-	if (num > 9)
-		h_putnbr(num / 10);
-	h_putchar(num % 10 + '0');
-}
-
-void		h_putchar(char c)
-{
-	write(STDOUT_FILENO, &c, 1);
-}
-
-void		h_putstr(char *s)
-{
-	write(STDOUT_FILENO, s, h_strlen(s));
-}
-
-int			h_err(int ret, const char *format, char *str)
-{
-	while (*format != '\0')
-	{
-		if (format[0] == '%' && format[1] == 's')
-		{
-			if (str != NULL)
-				write(STDERR_FILENO, str, h_strlen(str));
-			format += 2;
-		}
-		else
-		{
-			write(STDERR_FILENO, format, 1);
-			format++;
-		}
-	}
-	write(STDERR_FILENO, "\n", 1);
-	return (ret);
 }
 
 t_time		h_time_now(void)

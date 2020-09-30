@@ -6,17 +6,17 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 08:41:23 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 09:57:41 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-void	*routine_philo(t_routine_arg *arg)
+void	*routine_philo(t_philo *arg)
 {
 	pthread_t		thread_death;
 
-	io_think(arg);
+	event_think(arg);
 	if (!arg->conf->all_alive)
 		return (NULL);
 	arg->time_last_eat = h_time_now();
@@ -24,18 +24,18 @@ void	*routine_philo(t_routine_arg *arg)
 		return (NULL);
 	while (arg->conf->all_alive)
 	{
-		io_take_fork(arg);
-		io_take_fork(arg);
-		io_eat(arg);
+		event_take_fork(arg);
+		event_take_fork(arg);
+		event_eat(arg);
 		arg->time_last_eat = h_time_now();
-		io_sleep(arg);
-		io_think(arg);
+		event_sleep(arg);
+		event_think(arg);
 	}
 	pthread_join(thread_death, NULL);
 	return (NULL);
 }
 
-void	*routine_death(t_routine_arg *arg)
+void	*routine_death(t_philo *arg)
 {
 	t_time			current;
 
@@ -43,19 +43,16 @@ void	*routine_death(t_routine_arg *arg)
 	while (arg->conf->all_alive &&
 			current - arg->time_last_eat < arg->conf->timeout_death)
 		current = h_time_now();
-	pthread_mutex_lock(&arg->conf->mutex_all_alive);
-	io_die(arg);
-	arg->conf->all_alive = false;
-	pthread_mutex_unlock(&arg->conf->mutex_all_alive);
+	event_die(arg);
 	return (NULL);
 }
 
-t_routine_arg	*routine_args_create(t_philo_conf *conf, sem_t *forks)
+t_philo	*routine_create_philos(t_philo_conf *conf, sem_t *forks)
 {
 	int				i;
-	t_routine_arg	*routine_conf;
+	t_philo	*routine_conf;
 
-	if ((routine_conf = malloc(sizeof(t_routine_arg) * conf->philo_num)) == NULL)
+	if ((routine_conf = malloc(sizeof(t_philo) * conf->philo_num)) == NULL)
 		return (NULL);
 	i = -1;
 	while (++i < conf->philo_num)

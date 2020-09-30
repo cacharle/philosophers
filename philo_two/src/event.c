@@ -6,15 +6,15 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 09:43:31 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/09/30 09:56:53 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
-void		io_take_fork(t_philo *arg, pthread_mutex_t *fork)
+void		event_take_fork(t_philo *arg)
 {
-	pthread_mutex_lock(fork);
+	sem_wait(arg->forks);
 	pthread_mutex_lock(&arg->conf->mutex_stdout);
 	if (!arg->conf->all_alive)
 		return ;
@@ -22,7 +22,7 @@ void		io_take_fork(t_philo *arg, pthread_mutex_t *fork)
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }
 
-void		io_eat(t_philo *arg)
+void		event_eat(t_philo *arg)
 {
 	int	eat_counter;
 
@@ -39,7 +39,7 @@ void		io_eat(t_philo *arg)
 	}
 }
 
-void		io_think(t_philo *arg)
+void		event_think(t_philo *arg)
 {
 	pthread_mutex_lock(&arg->conf->mutex_stdout);
 	if (!arg->conf->all_alive)
@@ -48,24 +48,24 @@ void		io_think(t_philo *arg)
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }
 
-void		io_sleep(t_philo *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left)
+void		event_sleep(t_philo *arg)
 {
 	pthread_mutex_lock(&arg->conf->mutex_stdout);
 	if (!arg->conf->all_alive)
 		return ;
 	philo_put(arg->id, EVENT_SLEEP);
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
-	pthread_mutex_unlock(fork_right);
-	pthread_mutex_unlock(fork_left);
+	sem_post(arg->forks);
+	sem_post(arg->forks);
 	usleep(arg->conf->timeout_sleep * 1000);
 }
 
-void		io_die(t_philo *arg)
+void		event_die(t_philo *arg)
 {
 	pthread_mutex_lock(&arg->conf->mutex_stdout);
 	if (!arg->conf->all_alive)
 		return ;
-	arg->conf->all_alive = false;
 	philo_put(arg->id, EVENT_DIE);
+	arg->conf->all_alive = false;
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }
