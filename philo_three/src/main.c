@@ -6,15 +6,27 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 14:45:20 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/01 09:34:55 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
+sem_t	*philo_sem_create(char *name, int value)
+{
+	sem_t	*sem;
+
+	sem_unlink(name);
+	sem = sem_open(name, O_CREAT | O_EXCL, 0700, value);
+	if (sem == SEM_FAILED)
+		return (NULL);
+	return (sem);
+}
+
 int main(int argc, char **argv)
 {
 	t_philo_args	args;
+	t_philo			philo;
 	sem_t			*forks;
 	sem_t			*sem_stdout;
 	sem_t			*sem_dead;
@@ -22,29 +34,28 @@ int main(int argc, char **argv)
 	if (!parse_args(&args, argc, argv))
 		return (1);
 
-	sem_unlink(PHILO_SEM_NAME);
-	forks = sem_open(PHILO_SEM_NAME, O_CREAT | O_EXCL, 0700, args.philo_num);
-	if (forks == SEM_FAILED)
+
+	if ((forks = philo_sem_create(PHILO_SEM_NAME, args.philo_num)) == NULL ||
+		(sem_stdout = philo_sem_create(PHILO_SEM_STDOUT_NAME, 1)) == NULL ||
+		(sem_dead = philo_sem_create(PHILO_SEM_DEAD_NAME, 1)) == NULL)
 		return (1);
 
-	sem_unlink(PHILO_SEM_STDOUT_NAME);
-	sem_stdout = sem_open(PHILO_SEM_STDOUT_NAME, O_CREAT | O_EXCL, 0700, 1);
-	if (sem_stdout == SEM_FAILED)
-		return (1);
-
-	sem_unlink(PHILO_SEM_ALIVE_NAME);
-	sem_dead = sem_open(PHILO_SEM_ALIVE_NAME, O_CREAT | O_EXCL, 0700, 1);
-	if (sem_dead == SEM_FAILED)
-		return (1);
-
-	pid_t	pid;
 	pid_t	*pids;
 	pids = malloc(sizeof(pid_t) * args.philo_num);
 
 	int i = -1;
 	while (++i < args.philo_num)
-		pids[i] = child_start(&args);
+	{
+		philo.conf = &args;
+		philo.id = i + 1;
+		if ((pids[i] = child_start(&philo)) == -1)
+		{
+			free(pids);
+			return (1);
+		}
+	}
 
+	sem_wait(sem_dead);
 	sem_wait(sem_dead);
 
 	i = -1;
@@ -54,8 +65,9 @@ int main(int argc, char **argv)
 
 	sem_close(forks);
 	sem_close(sem_stdout);
+	sem_close(sem_dead);
 	sem_unlink(PHILO_SEM_NAME);
 	sem_unlink(PHILO_SEM_STDOUT_NAME);
+	sem_unlink(PHILO_SEM_DEAD_NAME);
 	return (0);
 }
-

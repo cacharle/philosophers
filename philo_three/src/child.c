@@ -6,46 +6,47 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 14:36:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 14:39:58 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/01 09:11:29 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-void	*routine_death(t_philo_args *arg)
+void	*routine_death(t_philo *philo)
 {
 	t_time	current;
 
 	current = h_time_now();
-	while (current - arg->time_last_eat < arg->conf->timeout_death)
+	while (current - philo->time_last_eat < philo->conf->timeout_death)
 		current = h_time_now();
-	if (!arg->conf->all_alive)
-		return (NULL);
-	event_die(arg);
+	event_die(philo);
 	return (NULL);
 }
 
-pid_t	child_start(t_philo_args *arg)
+pid_t	child_start(t_philo *philo)
 {
-	pid_t	pid;
-	sem_t			*forks;
-	sem_t			*sem_stdout;
-	sem_t			*sem_alive;
+	pid_t		pid;
+	pthread_t	thread_death;
 
 	pid = fork();
 	if (pid == -1)
 		return (-1);
 	if (pid == 0)
 	{
-		forks = sem_open(PHILO_SEM_NAME, 0);
-		sem_stdout = sem_open(PHILO_SEM_STDOUT_NAME, 0);
-		pthread_create(&death_thread, NULL, (t_routine)routine_death, &args);
-		event_think();
+		philo->forks = sem_open(PHILO_SEM_NAME, 0);
+		philo->sem_stdout = sem_open(PHILO_SEM_STDOUT_NAME, 0);
+		philo->sem_dead = sem_open(PHILO_SEM_DEAD_NAME, 0);
+		philo->time_last_eat = h_time_now();
+		pthread_create(&thread_death, NULL, (t_routine)routine_death, philo);
+		event_think(philo);
 		while (true)
 		{
-			event_eat();
-			event_sleep();
-			event_think();
+			event_take_fork(philo);
+			event_take_fork(philo);
+			philo->time_last_eat = h_time_now();
+			event_eat(philo);
+			event_sleep(philo);
+			event_think(philo);
 		}
 		exit(0);
 	}

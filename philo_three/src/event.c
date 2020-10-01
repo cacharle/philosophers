@@ -6,56 +6,55 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 14:47:49 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/01 09:04:39 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
-void		event_take_fork(t_philo *arg)
+void		event_take_fork(t_philo *philo)
 {
-	sem_wait(arg->forks);
-	sem_wait(&arg->conf->mutex_stdout);
-	philo_put(arg->id, EVENT_FORK);
-	sem_post(&arg->conf->mutex_stdout);
+	sem_wait(philo->forks);
+	sem_wait(philo->sem_stdout);
+	philo_put(philo->id, EVENT_FORK);
+	sem_post(philo->sem_stdout);
 }
 
-void		event_eat(t_philo *arg)
+void		event_eat(t_philo *philo)
 {
 	int	eat_counter;
 
 	eat_counter = 0;
-	while (eat_counter < arg->conf->meal_num)
+	while (eat_counter < philo->conf->meal_num)
 	{
-		sem_wait(&arg->conf->mutex_stdout);
-		philo_put(arg->id, EVENT_EAT);
-		sem_post(&arg->conf->mutex_stdout);
-		usleep(arg->conf->timeout_eat * 1000);
+		sem_wait(philo->sem_stdout);
+		philo_put(philo->id, EVENT_EAT);
+		sem_post(philo->sem_stdout);
+		usleep(philo->conf->timeout_eat * 1000);
 		eat_counter++;
 	}
 }
 
-void		event_think(t_philo *arg)
+void		event_think(t_philo *philo)
 {
-	sem_wait(&arg->conf->mutex_stdout);
-	philo_put(arg->id, EVENT_THINK);
-	sem_post(&arg->conf->mutex_stdout);
+	sem_wait(philo->sem_stdout);
+	philo_put(philo->id, EVENT_THINK);
+	sem_post(philo->sem_stdout);
 }
 
-void		event_sleep(int id, t_time timeout_sleep, sem_t *sem_stdout, sem_t )
+void		event_sleep(t_philo *philo)
 {
-	sem_wait(sem_stdout);
-	philo_put(id, EVENT_SLEEP);
-	sem_post(sem_stdout);
-	sem_post(arg->forks);
-	sem_post(arg->forks);
-	usleep(arg->conf->timeout_sleep * 1000);
+	sem_wait(philo->sem_stdout);
+	philo_put(philo->id, EVENT_SLEEP);
+	sem_post(philo->sem_stdout);
+	sem_post(philo->forks);
+	sem_post(philo->forks);
+	usleep(philo->conf->timeout_sleep * 1000);
 }
 
-void		event_die(int id, sem_t *sem_stdout, sem_t *sem_dead)
+void		event_die(t_philo *philo)
 {
-	sem_wait(sem_stdout);
-	philo_put(arg->id, EVENT_DIE);
-	arg->conf->all_alive = false;
-	sem_post(sem_dead);
+	sem_wait(philo->sem_stdout);
+	philo_put(philo->id, EVENT_DIE);
+	sem_post(philo->sem_dead);
 }

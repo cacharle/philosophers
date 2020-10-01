@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 14:47:49 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/01 09:10:30 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <sys/time.h>
 # include <semaphore.h>
 
@@ -22,19 +23,19 @@
 
 # define PHILO_SEM_NAME        "semaphore_philo_three"
 # define PHILO_SEM_STDOUT_NAME "semaphore_philo_three_stdout"
-# define PHILO_SEM_ALIVE_NAME  "semaphore_philo_three_alive"
+# define PHILO_SEM_DEAD_NAME   "semaphore_philo_three_dead"
 
 typedef struct
 {
-	long int		philo_num;
-	t_time 			timeout_death;
-	t_time			timeout_eat;
-	t_time			timeout_sleep;
-	long int		meal_num;
+	t_philo_args	*conf;
+	int				id;
+	t_time			time_last_eat;
+	sem_t			*forks;
+	sem_t			*sem_stdout;
+	sem_t			*sem_dead;
+}					t_philo;
 
-}	t_philo_conf;
-
-pid_t	child_start(t_philo_args *arg);
+pid_t	child_start(t_philo *arg);
 
 void	event_take_fork(t_philo *arg);
 void	event_eat(t_philo *arg);

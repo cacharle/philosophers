@@ -6,12 +6,12 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/30 08:48:37 by cacharle         ###   ########.fr        #
+#    Updated: 2020/10/01 09:10:44 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 RM = rm -f
-MAKE = --no-print-directory
+MAKE = make --no-print-directory
 
 COMMON_DIR = ../common
 
