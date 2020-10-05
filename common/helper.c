@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:22:49 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 10:15:14 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:28:35 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,15 @@ long int	h_atou_strict(char *s)
 	return (num);
 }
 
+/*
+** No need to check error of gettimeofday
+** (only for settimeofday and passed pointer validity)
+*/
+
 t_time		h_time_now(void)
 {
 	struct timeval	tv;
 
-	if (gettimeofday(&tv, NULL) == -1)
-		return (-1);
+	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 14:30:52 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:03:38 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ void	*routine_death(t_philo *arg)
 t_philo	*routine_create_philos(t_philo_conf *conf, sem_t *forks)
 {
 	int		i;
-	t_philo	*routine_conf;
+	t_philo	*philos;
 
-	if ((routine_conf = malloc(sizeof(t_philo) * conf->philo_num)) == NULL)
+	if ((philos = malloc(sizeof(t_philo) * conf->philo_num)) == NULL)
 		return (NULL);
 	i = -1;
 	while (++i < conf->philo_num)
 	{
-		routine_conf[i].id = i + 1;
-		routine_conf[i].forks = forks;
-		routine_conf[i].conf = conf;
+		philos[i].id = i + 1;
+		philos[i].forks = forks;
+		philos[i].conf = conf;
 	}
-	return (routine_conf);
+	return (philos);
 }

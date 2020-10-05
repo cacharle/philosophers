@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 15:05:26 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 16:54:29 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ typedef struct		s_philo
 	sem_t			*sem_stdout;
 	sem_t			*sem_dead;
 }					t_philo;
+
+typedef struct		s_sems
+{
+	sem_t			*forks;
+	sem_t			*sem_stdout;
+	sem_t			*sem_dead;
+}					t_sems;
 
 pid_t				child_start(t_philo *arg);
 

@@ -6,13 +6,13 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:03:53 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 14:27:13 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:29:09 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-size_t		st_strlen(char *s)
+static size_t	st_strlen(char *s)
 {
 	int	counter;
 
@@ -22,7 +22,7 @@ size_t		st_strlen(char *s)
 	return (counter);
 }
 
-static char	*st_nbrcpy(char *dst, long long int num)
+static char		*st_nbrcpy(char *dst, long long int num)
 {
 	if (num > 9)
 		dst = st_nbrcpy(dst, num / 10);
@@ -31,7 +31,7 @@ static char	*st_nbrcpy(char *dst, long long int num)
 	return (dst + 1);
 }
 
-static void	st_strcat(char *dst, char *str)
+static void		st_strcat(char *dst, char *str)
 {
 	while (*dst != '\0')
 		dst++;
@@ -40,7 +40,7 @@ static void	st_strcat(char *dst, char *str)
 	*dst = '\0';
 }
 
-void		philo_put(size_t id, t_philo_event event)
+void			philo_put(size_t id, t_philo_event event)
 {
 	static char	buf[2048];
 
@@ -61,7 +61,7 @@ void		philo_put(size_t id, t_philo_event event)
 	write(STDOUT_FILENO, buf, st_strlen(buf));
 }
 
-int			h_err(int ret, const char *format, char *str)
+int				h_err(int ret, const char *format, char *str)
 {
 	while (*format != '\0')
 	{
