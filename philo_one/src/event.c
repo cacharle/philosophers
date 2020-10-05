@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   io.c                                               :+:      :+:    :+:   */
+/*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 09:43:31 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:27:39 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void		event_think(t_philo *arg)
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }
 
-void		event_sleep(t_philo *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left)
+void		event_sleep(
+	t_philo *arg,
+	pthread_mutex_t *fork_right,
+	pthread_mutex_t *fork_left)
 {
 	pthread_mutex_lock(&arg->conf->mutex_stdout);
 	if (!arg->conf->all_alive)

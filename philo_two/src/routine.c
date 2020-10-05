@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 09:57:41 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:30:52 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*routine_philo(t_philo *arg)
 {
-	pthread_t		thread_death;
+	pthread_t	thread_death;
 
 	event_think(arg);
 	if (!arg->conf->all_alive)
@@ -37,11 +37,11 @@ void	*routine_philo(t_philo *arg)
 
 void	*routine_death(t_philo *arg)
 {
-	t_time			current;
+	t_time	current;
 
 	current = h_time_now();
-	while (arg->conf->all_alive &&
-			current - arg->time_last_eat < arg->conf->timeout_death)
+	while (arg->conf->all_alive
+			&& current - arg->time_last_eat < arg->conf->timeout_death)
 		current = h_time_now();
 	event_die(arg);
 	return (NULL);
@@ -49,7 +49,7 @@ void	*routine_death(t_philo *arg)
 
 t_philo	*routine_create_philos(t_philo_conf *conf, sem_t *forks)
 {
-	int				i;
+	int		i;
 	t_philo	*routine_conf;
 
 	if ((routine_conf = malloc(sizeof(t_philo) * conf->philo_num)) == NULL)

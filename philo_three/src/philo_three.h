@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/01 09:10:30 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:05:26 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define PHILO_SEM_STDOUT_NAME "semaphore_philo_three_stdout"
 # define PHILO_SEM_DEAD_NAME   "semaphore_philo_three_dead"
 
-typedef struct
+typedef struct		s_philo
 {
 	t_philo_args	*conf;
 	int				id;
@@ -35,12 +35,12 @@ typedef struct
 	sem_t			*sem_dead;
 }					t_philo;
 
-pid_t	child_start(t_philo *arg);
+pid_t				child_start(t_philo *arg);
 
-void	event_take_fork(t_philo *arg);
-void	event_eat(t_philo *arg);
-void	event_think(t_philo *arg);
-void	event_sleep(t_philo *arg);
-void	event_die(t_philo *arg);
+void				event_take_fork(t_philo *arg);
+void				event_eat(t_philo *arg);
+void				event_think(t_philo *arg);
+void				event_sleep(t_philo *arg);
+void				event_die(t_philo *arg);
 
 #endif

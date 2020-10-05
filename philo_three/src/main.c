@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/01 09:34:55 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:31:39 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,25 @@ sem_t	*philo_sem_create(char *name, int value)
 	return (sem);
 }
 
-int main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_philo_args	args;
 	t_philo			philo;
 	sem_t			*forks;
 	sem_t			*sem_stdout;
 	sem_t			*sem_dead;
+	pid_t			*pids;
+	int				i;
 
 	if (!parse_args(&args, argc, argv))
 		return (1);
-
-
-	if ((forks = philo_sem_create(PHILO_SEM_NAME, args.philo_num)) == NULL ||
-		(sem_stdout = philo_sem_create(PHILO_SEM_STDOUT_NAME, 1)) == NULL ||
-		(sem_dead = philo_sem_create(PHILO_SEM_DEAD_NAME, 1)) == NULL)
+	if ((forks = philo_sem_create(PHILO_SEM_NAME, args.philo_num)) == NULL
+		|| (sem_stdout = philo_sem_create(PHILO_SEM_STDOUT_NAME, 1)) == NULL
+		|| (sem_dead = philo_sem_create(PHILO_SEM_DEAD_NAME, 0)) == NULL)
 		return (1);
-
-	pid_t	*pids;
-	pids = malloc(sizeof(pid_t) * args.philo_num);
-
-	int i = -1;
+	if ((pids = malloc(sizeof(pid_t) * args.philo_num)) == NULL)
+		return (1);
+	i = -1;
 	while (++i < args.philo_num)
 	{
 		philo.conf = &args;
@@ -54,15 +52,11 @@ int main(int argc, char **argv)
 			return (1);
 		}
 	}
-
 	sem_wait(sem_dead);
-	sem_wait(sem_dead);
-
 	i = -1;
 	while (++i < args.philo_num)
 		kill(pids[i], SIGKILL);
 	free(pids);
-
 	sem_close(forks);
 	sem_close(sem_stdout);
 	sem_close(sem_dead);

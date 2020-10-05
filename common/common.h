@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 10:36:03 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:30:07 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 typedef long int	t_time;
 
-typedef enum
+typedef enum		e_philo_event
 {
 	EVENT_FORK,
 	EVENT_EAT,
@@ -34,7 +34,7 @@ typedef enum
 typedef struct
 {
 	long int		philo_num;
-	t_time 			timeout_death;
+	t_time			timeout_death;
 	t_time			timeout_eat;
 	t_time			timeout_sleep;
 	long int		meal_num;

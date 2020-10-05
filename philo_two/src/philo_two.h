@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 10:02:50 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:29:40 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 typedef struct
 {
 	long int		philo_num;
-	t_time 			timeout_death;
+	t_time			timeout_death;
 	t_time			timeout_eat;
 	t_time			timeout_sleep;
 	long int		meal_num;
@@ -43,18 +43,18 @@ typedef struct
 ** routine.c
 */
 
-void			*routine_philo(t_philo *arg);
-void			*routine_death(t_philo *arg);
-t_philo			*routine_create_philos(t_philo_conf *conf, sem_t *forks);
+void				*routine_philo(t_philo *arg);
+void				*routine_death(t_philo *arg);
+t_philo				*routine_create_philos(t_philo_conf *conf, sem_t *forks);
 
 /*
 ** io.c
 */
 
-void			event_take_fork(t_philo *arg);
-void			event_eat(t_philo *arg);
-void			event_think(t_philo *arg);
-void			event_sleep(t_philo *arg);
-void			event_die(t_philo *arg);
+void				event_take_fork(t_philo *arg);
+void				event_eat(t_philo *arg);
+void				event_think(t_philo *arg);
+void				event_sleep(t_philo *arg);
+void				event_die(t_philo *arg);
 
 #endif

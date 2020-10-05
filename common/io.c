@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:03:53 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 10:32:41 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 14:27:13 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*st_nbrcpy(char *dst, long long int num)
 		dst = st_nbrcpy(dst, num / 10);
 	dst[0] = num % 10 + '0';
 	dst[1] = '\0';
-	return dst + 1;
+	return (dst + 1);
 }
 
 static void	st_strcat(char *dst, char *str)

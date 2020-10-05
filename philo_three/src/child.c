@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 14:36:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/01 09:11:29 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/05 15:02:10 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ void	*routine_death(t_philo *philo)
 
 pid_t	child_start(t_philo *philo)
 {
-	pid_t		pid;
 	pthread_t	thread_death;
+	pid_t		pid;
 
-	pid = fork();
-	if (pid == -1)
+	if ((pid = fork()) == -1)
 		return (-1);
 	if (pid == 0)
 	{
@@ -50,5 +49,5 @@ pid_t	child_start(t_philo *philo)
 		}
 		exit(0);
 	}
-	return pid;
+	return (pid);
 }
