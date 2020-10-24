@@ -6,12 +6,11 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/09 03:31:28 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/27 09:04:22 by charles          ###   ########.fr        #
+#    Updated: 2020/10/24 13:05:33 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-MAKE = make
-MAKE_ARGS = --no-print-directory
+MAKE = make --no-print-directory
 
 PHILO_ONE_DIR = philo_one
 PHILO_TWO_DIR = philo_two
@@ -22,14 +21,13 @@ help:
 	@echo "make philo_two    - compile philo_two"
 	@echo "make philo_three  - compile philo_three"
 
-.PHONY: philo_one
 philo_one:
-	$(MAKE) $(MAKE_ARGS) -C $(PHILO_ONE_DIR)
+	$(MAKE) -C $(PHILO_ONE_DIR)
 
-.PHONY: philo_two
 philo_two:
-	$(MAKE) $(MAKE_ARGS) -C $(PHILO_TWO_DIR)
+	$(MAKE) -C $(PHILO_TWO_DIR)
 
-.PHONY: philo_three
 philo_three:
-	$(MAKE) $(MAKE_ARGS) -C $(PHILO_THREE_DIR)
+	$(MAKE) -C $(PHILO_THREE_DIR)
+
+.PHONY: philo_one philo_two philo_three help

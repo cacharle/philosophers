@@ -6,27 +6,30 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:45:23 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 16:23:19 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/24 13:02:12 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-#define PHILO_SEM_NAME "semaphore_philo_two"
+#define PHILO_SEM_NAME        "semaphore_philo_two"
+#define PHILO_SEM_STDOUT_NAME "semaphore_philo_two_stdout"
 
 static int	st_destroy(
 	sem_t *forks,
 	t_philo *philos,
 	pthread_t *threads,
-	int philo_num)
+	t_philo_conf *conf)
 {
 	int	i;
 
 	i = -1;
-	while (++i < philo_num)
+	while (++i < conf->philo_num)
 		sem_post(forks);
 	sem_close(forks);
 	sem_unlink(PHILO_SEM_NAME);
+	sem_close(conf->sem_stdout);
+	sem_unlink(PHILO_SEM_STDOUT_NAME);
 	free(philos);
 	free(threads);
 	return (1);
@@ -44,11 +47,14 @@ static int	st_setup(
 	*forks = sem_open(PHILO_SEM_NAME, O_CREAT | O_EXCL, 0700, conf->philo_num);
 	if (*forks == SEM_FAILED)
 		return (1);
+	sem_unlink(PHILO_SEM_STDOUT_NAME);
+	conf->sem_stdout = sem_open(PHILO_SEM_STDOUT_NAME, O_CREAT | O_EXCL, 0700, 1);
+	if (conf->sem_stdout == SEM_FAILED)
+		return (1);
 	*threads = NULL;
 	if ((*philos = routine_create_philos(conf, *forks)) == NULL ||
-		(*threads = malloc(sizeof(pthread_t) * conf->philo_num)) == NULL ||
-		pthread_mutex_init(&conf->mutex_stdout, NULL) != 0)
-		return (st_destroy(*forks, *philos, *threads, conf->philo_num));
+		(*threads = malloc(sizeof(pthread_t) * conf->philo_num)) == NULL)
+		return (st_destroy(*forks, *philos, *threads, conf));
 	conf->all_alive = true;
 	i = -1;
 	while (++i < conf->philo_num)
@@ -57,7 +63,7 @@ static int	st_setup(
 		{
 			while (--i >= 0)
 				pthread_detach((*threads)[i]);
-			return (st_destroy(*forks, *philos, *threads, conf->philo_num));
+			return (st_destroy(*forks, *philos, *threads, conf));
 		}
 	return (0);
 }
@@ -81,6 +87,6 @@ int			main(int argc, char **argv)
 	i = -1;
 	while (++i < conf.philo_num)
 		pthread_detach(threads[i]);
-	st_destroy(forks, philos, threads, conf.philo_num);
+	st_destroy(forks, philos, threads, &conf);
 	return (0);
 }

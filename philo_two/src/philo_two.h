@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 14:29:40 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/24 13:03:58 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_TWO_H
 
 # include <unistd.h>
+# include <fcntl.h>
 # include <stdbool.h>
 # include <pthread.h>
 # include <semaphore.h>
@@ -28,7 +29,7 @@ typedef struct
 	t_time			timeout_sleep;
 	long int		meal_num;
 	bool			all_alive;
-	pthread_mutex_t	mutex_stdout;
+	sem_t			*sem_stdout;
 }					t_philo_conf;
 
 typedef struct

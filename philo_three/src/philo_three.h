@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 16:54:29 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/10/24 13:02:33 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_THREE_H
 
 # include <unistd.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/time.h>

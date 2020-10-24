@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/10/05 10:31:22 by cacharle         ###   ########.fr        #
+#    Updated: 2020/10/24 13:02:46 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ MAKE = make --no-print-directory
 COMMON_DIR = ../common
 
 CC = gcc
-CCFLAGS = -I$(COMMON_DIR) -Wall -Wextra #-Werror
+CCFLAGS = -I$(COMMON_DIR) -Wall -Wextra -Werror
 LDFLAGS = -lpthread -L$(COMMON_DIR) -lphilocommon
 
 NAME = philo_three
@@ -33,7 +33,7 @@ prebuild:
 	@mkdir -p $(OBJDIR)
 
 $(NAME): common_all $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $(OBJ)
+	$(CC) -o $@ $(OBJ) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CCFLAGS) -c -o $@ $<
