@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:12:55 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 14:26:40 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/12/30 13:44:54 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ bool	parse_args(t_philo_args *args, int argc, char **argv)
 			return (false);
 	}
 	else
-		args->meal_num = 1;
+		args->meal_num = -1;
 	return (true);
 }

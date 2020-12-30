@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 16:13:10 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/12/30 11:58:51 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ bool	philos_start(t_philo *philos, int num)
 				pthread_detach(philos[i].thread);
 			return (false);
 		}
+		usleep(200);
 	}
 	return (true);
 }

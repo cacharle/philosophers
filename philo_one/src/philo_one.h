@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/05 14:28:24 by cacharle         ###   ########.fr       */
+/*   Updated: 2020/12/30 13:44:14 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ typedef struct
 	t_time			timeout_sleep;
 	long int		meal_num;
 	bool			all_alive;
+	long int		meal_num_finished_counter;
 	pthread_mutex_t	mutex_stdout;
+	pthread_mutex_t	mutex_meal_num_finished_counter;
 }					t_philo_conf;
 
 typedef struct		s_philo
