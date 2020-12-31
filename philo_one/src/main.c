@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2020/12/30 14:04:42 by charles          ###   ########.fr       */
+/*   Updated: 2020/12/31 19:22:08 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int			main(int argc, char **argv)
 		free(philos);
 		return (1);
 	}
-	while (conf.all_alive && (conf.meal_num != -1 && conf.meal_num_finished_counter != conf.philo_num))
-		/* printf("%ld\n", conf.meal_num_finished_counter); */
-		;
+	while (conf.all_alive)
+		if (conf.meal_num != -1 && conf.meal_num_finished_counter == conf.philo_num)
+			break;
 	conf.all_alive = false;
 	philos_detach(philos, conf.philo_num);
 	forks_destroy(forks, conf.philo_num);
