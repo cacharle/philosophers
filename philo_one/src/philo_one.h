@@ -6,13 +6,14 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2020/12/30 13:44:14 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/01 13:51:29 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_ONE_H
 # define PHILO_ONE_H
 
+# define _XOPEN_SOURCE 500
 # include <unistd.h>
 # include <sys/time.h>
 # include <stdlib.h>
@@ -42,7 +43,7 @@ typedef struct
 
 typedef struct		s_philo
 {
-	int				id;
+	long int		id;
 	pthread_t		thread;
 	t_time			time_last_eat;
 	t_philo_conf	*conf;
@@ -55,22 +56,23 @@ typedef struct		s_philo
 ** forks.c
 */
 
-pthread_mutex_t		*forks_new(int num);
-void				forks_destroy(pthread_mutex_t *forks, int num);
+pthread_mutex_t		*forks_new(long int num);
+void				forks_destroy(pthread_mutex_t *forks, long int num);
 
 /*
 ** philo.c
 */
 
 t_philo				*philos_new(t_philo_conf *conf, pthread_mutex_t *forks);
-void				philos_destroy(t_philo *philos, int num);
-bool				philos_start(t_philo *philos, int num);
-void				philos_detach(t_philo *philos, int num);
+void				philos_destroy(t_philo *philos, long int num);
+bool				philos_start(t_philo *philos, long int num);
+void				philos_detach(t_philo *philos, long int num);
 
 /*
 ** routine.c
 */
 
+bool				philo_finished(t_philo_conf *conf);
 void				*routine_philo(t_philo *arg);
 void				*routine_death(t_philo *arg);
 

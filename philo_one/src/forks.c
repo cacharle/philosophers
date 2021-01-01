@@ -6,15 +6,15 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2020/09/30 09:45:46 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/01 13:34:42 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-pthread_mutex_t	*forks_new(int num)
+pthread_mutex_t	*forks_new(long int num)
 {
-	int				i;
+	long int		i;
 	pthread_mutex_t	*forks;
 
 	if ((forks = malloc(num * sizeof(pthread_mutex_t))) == NULL)
@@ -31,7 +31,7 @@ pthread_mutex_t	*forks_new(int num)
 	return (forks);
 }
 
-void			forks_destroy(pthread_mutex_t *forks, int num)
+void			forks_destroy(pthread_mutex_t *forks, long int num)
 {
 	while (num-- > 0)
 		pthread_mutex_destroy(&forks[num]);
