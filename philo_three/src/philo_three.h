@@ -6,13 +6,14 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/24 13:02:33 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/01 15:34:04 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_THREE_H
 # define PHILO_THREE_H
 
+# define _XOPEN_SOURCE 500
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
@@ -24,7 +25,7 @@
 
 # define PHILO_SEM_NAME        "semaphore_philo_three"
 # define PHILO_SEM_STDOUT_NAME "semaphore_philo_three_stdout"
-# define PHILO_SEM_DEAD_NAME   "semaphore_philo_three_dead"
+# define PHILO_SEM_FINISH_NAME "semaphore_philo_three_finish"
 
 typedef struct		s_philo
 {
@@ -33,14 +34,14 @@ typedef struct		s_philo
 	t_time			time_last_eat;
 	sem_t			*forks;
 	sem_t			*sem_stdout;
-	sem_t			*sem_dead;
+	sem_t			*sem_finish;
 }					t_philo;
 
 typedef struct		s_sems
 {
 	sem_t			*forks;
 	sem_t			*sem_stdout;
-	sem_t			*sem_dead;
+	sem_t			*sem_finish;
 }					t_sems;
 
 pid_t				child_start(t_philo *arg);

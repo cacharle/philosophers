@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/01 09:04:39 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/01 16:29:31 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,10 @@ void		event_take_fork(t_philo *philo)
 
 void		event_eat(t_philo *philo)
 {
-	int	eat_counter;
-
-	eat_counter = 0;
-	while (eat_counter < philo->conf->meal_num)
-	{
-		sem_wait(philo->sem_stdout);
-		philo_put(philo->id, EVENT_EAT);
-		sem_post(philo->sem_stdout);
-		usleep(philo->conf->timeout_eat * 1000);
-		eat_counter++;
-	}
+	sem_wait(philo->sem_stdout);
+	philo_put(philo->id, EVENT_EAT);
+	sem_post(philo->sem_stdout);
+	usleep(philo->conf->timeout_eat * 1000);
 }
 
 void		event_think(t_philo *philo)
@@ -54,7 +47,16 @@ void		event_sleep(t_philo *philo)
 
 void		event_die(t_philo *philo)
 {
+	long int i;
+
 	sem_wait(philo->sem_stdout);
 	philo_put(philo->id, EVENT_DIE);
-	sem_post(philo->sem_dead);
+	if (philo->conf->meal_num == -1)
+		sem_post(philo->sem_finish);
+	else
+	{
+		i = -1;
+		while (++i < philo->conf->philo_num)
+			sem_post(philo->sem_finish);
+	}
 }
