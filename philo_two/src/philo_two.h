@@ -6,13 +6,14 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2020/10/24 13:03:58 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/01 14:18:57 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_TWO_H
 # define PHILO_TWO_H
 
+# define _XOPEN_SOURCE 500
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -29,7 +30,9 @@ typedef struct
 	t_time			timeout_sleep;
 	long int		meal_num;
 	bool			all_alive;
+	long int		meal_num_finished_counter;
 	sem_t			*sem_stdout;
+	sem_t			*sem_meal_num_finished_counter;
 }					t_philo_conf;
 
 typedef struct
@@ -44,6 +47,7 @@ typedef struct
 ** routine.c
 */
 
+bool				philo_finished(t_philo_conf *conf);
 void				*routine_philo(t_philo *arg);
 void				*routine_death(t_philo *arg);
 t_philo				*routine_create_philos(t_philo_conf *conf, sem_t *forks);

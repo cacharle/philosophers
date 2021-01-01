@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 13:57:11 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/01 14:24:05 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void		*routine_philo(t_philo *arg)
 	arg->time_last_eat = h_time_now();
 	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);
-	event_think(arg);
 	eat_counter = 0;
+	event_think(arg);
 	while (!philo_finished(arg->conf))
 	{
 		event_take_fork(arg, arg->fork_left);
 		event_take_fork(arg, arg->fork_right);
-		arg->time_last_eat = h_time_now();
 		event_eat(arg);
+		arg->time_last_eat = h_time_now();
 		eat_counter++;
 		if (!philo_finished(arg->conf) && arg->conf->meal_num != -1 &&
 			eat_counter == arg->conf->meal_num)

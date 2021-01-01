@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2020/10/24 13:02:05 by charles          ###   ########.fr        #
+#    Updated: 2021/01/01 14:45:16 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ MAKE = make --no-print-directory
 COMMONDIR = ../common
 
 CC = gcc
-CCFLAGS = -g -Wall -Wextra -I$(COMMONDIR) -Werror
+CCFLAGS = -g -I$(COMMONDIR) -std=c99 -Wall -Wextra -Werror
 LDFLAGS = -lpthread -L$(COMMONDIR) -lphilocommon
 
 NAME = philo_two
