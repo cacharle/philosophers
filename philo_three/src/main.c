@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 16:30:33 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/02 12:07:14 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int		st_setup(t_philo_args *args, t_sems *sems, pid_t **pids)
 		|| (sems->sem_stdout =
 			st_sem_create(PHILO_SEM_STDOUT_NAME, 1)) == SEM_FAILED
 		|| (sems->sem_finish =
-			st_sem_create(PHILO_SEM_FINISH_NAME, args->meal_num == -1 ? 1 : args->philo_num)) == SEM_FAILED
+			st_sem_create(PHILO_SEM_FINISH_NAME,
+				args->meal_num == -1 ? 1 : args->philo_num)) == SEM_FAILED
 		|| (*pids = malloc(sizeof(pid_t) * args->philo_num)) == NULL)
 		return (st_destroy(sems, *pids, 0));
 	i = -1;
@@ -66,12 +67,32 @@ static int		st_setup(t_philo_args *args, t_sems *sems, pid_t **pids)
 	return (0);
 }
 
+static void		st_wait(t_philo_args *args, t_sems *sems)
+{
+	long int		i;
+
+	if (args->meal_num == -1)
+	{
+		sem_wait(sems->sem_finish);
+		sem_wait(sems->sem_finish);
+	}
+	else
+	{
+		i = -1;
+		while (++i < args->philo_num)
+			sem_wait(sems->sem_finish);
+		i = -1;
+		while (++i < args->philo_num)
+			sem_wait(sems->sem_finish);
+		sem_wait(sems->sem_stdout);
+	}
+}
+
 int				main(int argc, char **argv)
 {
 	t_philo_args	args;
 	t_sems			sems;
 	pid_t			*pids;
-	long int		i;
 
 	if (!parse_args(&args, argc, argv))
 		return (1);
@@ -79,22 +100,7 @@ int				main(int argc, char **argv)
 		return (0);
 	if (st_setup(&args, &sems, &pids) != 0)
 		return (1);
-	if (args.meal_num == -1)
-	{
-		sem_wait(sems.sem_finish);
-		sem_wait(sems.sem_finish);
-	}
-	else
-	{
-		/* printf("eat %d\n", args.meal_num); */
-		i = -1;
-		while (++i < args.philo_num)
-			sem_wait(sems.sem_finish);
-		i = -1;
-		while (++i < args.philo_num)
-			sem_wait(sems.sem_finish);
-		sem_wait(sems.sem_stdout);
-	}
+	st_wait(&args, &sems);
 	st_destroy(&sems, pids, args.philo_num);
 	return (0);
 }

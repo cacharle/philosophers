@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 14:18:57 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/02 11:20:45 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ typedef struct
 	t_time			timeout_eat;
 	t_time			timeout_sleep;
 	long int		meal_num;
-	bool			all_alive;
-	long int		meal_num_finished_counter;
 	sem_t			*sem_stdout;
-	sem_t			*sem_meal_num_finished_counter;
+	sem_t			*sem_finish;
 }					t_philo_conf;
 
 typedef struct
@@ -47,7 +45,6 @@ typedef struct
 ** routine.c
 */
 
-bool				philo_finished(t_philo_conf *conf);
 void				*routine_philo(t_philo *arg);
 void				*routine_death(t_philo *arg);
 t_philo				*routine_create_philos(t_philo_conf *conf, sem_t *forks);
