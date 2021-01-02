@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 12:07:14 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/02 12:49:44 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void		st_wait(t_philo_args *args, t_sems *sems)
 		i = -1;
 		while (++i < args->philo_num)
 			sem_wait(sems->sem_finish);
-		sem_wait(sems->sem_stdout);
 	}
 }
 
