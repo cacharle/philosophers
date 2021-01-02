@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 14:24:05 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/02 10:51:36 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@ inline bool	philo_finished(t_philo_conf *conf)
 	return (!conf->all_alive ||
 			(conf->meal_num != -1 &&
 				conf->meal_num_finished_counter == conf->philo_num));
+}
+
+static void	st_check_meal_num_finished(t_philo *arg, long int eat_counter)
+{
+	if (!philo_finished(arg->conf) && arg->conf->meal_num != -1 &&
+		eat_counter == arg->conf->meal_num)
+	{
+		pthread_mutex_lock(&arg->conf->mutex_meal_num_finished_counter);
+		arg->conf->meal_num_finished_counter++;
+		pthread_mutex_unlock(&arg->conf->mutex_meal_num_finished_counter);
+	}
 }
 
 void		*routine_philo(t_philo *arg)
@@ -38,13 +49,7 @@ void		*routine_philo(t_philo *arg)
 		event_eat(arg);
 		arg->time_last_eat = h_time_now();
 		eat_counter++;
-		if (!philo_finished(arg->conf) && arg->conf->meal_num != -1 &&
-			eat_counter == arg->conf->meal_num)
-		{
-			pthread_mutex_lock(&arg->conf->mutex_meal_num_finished_counter);
-			arg->conf->meal_num_finished_counter++;
-			pthread_mutex_unlock(&arg->conf->mutex_meal_num_finished_counter);
-		}
+		st_check_meal_num_finished(arg, eat_counter);
 		event_sleep(arg, arg->fork_right, arg->fork_left);
 		event_think(arg);
 	}

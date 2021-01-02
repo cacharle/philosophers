@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 13:46:50 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/02 10:49:08 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void	event_think(t_philo *arg)
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 }
 
-void	event_sleep(t_philo *arg, pthread_mutex_t *fork_right, pthread_mutex_t *fork_left)
+void	event_sleep(
+	t_philo *arg,
+	pthread_mutex_t *fork_right,
+	pthread_mutex_t *fork_left)
 {
 	if (philo_finished(arg->conf))
 		return ;

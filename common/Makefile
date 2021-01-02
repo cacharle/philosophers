@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/09 22:39:08 by cacharle          #+#    #+#              #
-#    Updated: 2020/09/30 10:27:40 by cacharle         ###   ########.fr        #
+#    Updated: 2021/01/02 10:47:14 by cacharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ LIB = ar rcs
 RM = rm -rf
 
 CC = gcc
-CCFLAGS = -O2 -Wall -Wextra #-Werror
+CCFLAGS = -std=c99 -O2 -Wall -Wextra -Werror
 
 NAME = libphilocommon.a
 
