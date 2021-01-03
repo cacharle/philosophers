@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 13:55:28 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 16:53:35 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		event_eat(t_philo *arg)
 	sem_wait(arg->conf->sem_stdout);
 	philo_put(arg->id, EVENT_EAT, arg->conf->initial_time);
 	sem_post(arg->conf->sem_stdout);
-	usleep(arg->conf->timeout_eat * 1000);
+	h_sleep(arg->conf->timeout_eat);
 }
 
 void		event_think(t_philo *arg)
@@ -42,7 +42,7 @@ void		event_sleep(t_philo *arg)
 	sem_post(arg->conf->sem_stdout);
 	sem_post(arg->forks);
 	sem_post(arg->forks);
-	usleep(arg->conf->timeout_sleep * 1000);
+	h_sleep(arg->conf->timeout_sleep);
 }
 
 void		event_die(t_philo *arg)
