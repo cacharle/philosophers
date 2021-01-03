@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 13:51:29 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/03 13:56:16 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct
 	long int		meal_num;
 	bool			all_alive;
 	long int		meal_num_finished_counter;
+	t_time			initial_time;
 	pthread_mutex_t	mutex_stdout;
 	pthread_mutex_t	mutex_meal_num_finished_counter;
 }					t_philo_conf;

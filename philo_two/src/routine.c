@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 11:59:27 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 12:57:27 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*routine_death(t_philo *arg)
 	while (current - arg->time_last_eat < arg->conf->timeout_death)
 	{
 		current = h_time_now();
-		usleep(200);
+		usleep(1000);
 	}
 	event_die(arg);
 	return (NULL);

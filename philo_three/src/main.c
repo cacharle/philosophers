@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 12:49:44 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 14:01:58 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ static int		st_destroy(t_sems *sems, pid_t *pids, int philo_num)
 	return (1);
 }
 
-static int		st_setup(t_philo_args *args, t_sems *sems, pid_t **pids)
+static int		st_setup(
+		t_philo_args *args, t_sems *sems, pid_t **pids, t_time initial_time)
 {
 	t_philo	philo;
 	int		i;
 
 	sems->sem_stdout = SEM_FAILED;
 	sems->sem_finish = SEM_FAILED;
-	*pids = NULL;
 	if ((sems->forks =
 			st_sem_create(PHILO_SEM_NAME, args->philo_num)) == SEM_FAILED
 		|| (sems->sem_stdout =
@@ -60,6 +60,7 @@ static int		st_setup(t_philo_args *args, t_sems *sems, pid_t **pids)
 	{
 		philo.conf = args;
 		philo.id = i + 1;
+		philo.initial_time = initial_time;
 		if (((*pids)[i] = child_start(&philo)) == -1)
 			return (st_destroy(sems, *pids, i));
 		usleep(200);
@@ -97,7 +98,8 @@ int				main(int argc, char **argv)
 		return (1);
 	if (args.philo_num == 0 || args.meal_num == 0)
 		return (0);
-	if (st_setup(&args, &sems, &pids) != 0)
+	pids = NULL;
+	if (st_setup(&args, &sems, &pids, h_time_now()) != 0)
 		return (1);
 	st_wait(&args, &sems);
 	st_destroy(&sems, pids, args.philo_num);

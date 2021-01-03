@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 11:20:45 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 13:55:04 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct
 	t_time			timeout_eat;
 	t_time			timeout_sleep;
 	long int		meal_num;
+	t_time			initial_time;
 	sem_t			*sem_stdout;
 	sem_t			*sem_finish;
 }					t_philo_conf;

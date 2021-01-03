@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 10:49:26 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 13:57:04 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int			main(int argc, char **argv)
 		return (0);
 	if (st_setup(&conf, &philos, &forks) != 0)
 		return (1);
+	conf.initial_time = h_time_now();
 	if (!philos_start(philos, conf.philo_num))
 	{
 		forks_destroy(forks, conf.philo_num);

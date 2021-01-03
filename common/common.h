@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 11:01:23 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 14:02:38 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int					h_err(int ret, const char *format, char *str);
 */
 
 void				philo_put_set_initial_time(void);
-void				philo_put(size_t id, t_philo_event event);
+void				philo_put(
+						size_t id, t_philo_event event, t_time initial_time);
 
 #endif

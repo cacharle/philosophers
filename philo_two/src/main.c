@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:45:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 12:49:06 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 13:54:45 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	st_setup(
 	if ((*philos = routine_create_philos(conf, *forks)) == NULL ||
 		(*threads = malloc(sizeof(pthread_t) * conf->philo_num)) == NULL)
 		return (st_destroy(*philos, *threads));
+	conf->initial_time = h_time_now();
 	i = -1;
 	while (++i < conf->philo_num)
 	{

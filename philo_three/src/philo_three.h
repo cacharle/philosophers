@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 15:34:04 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/03 13:51:54 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_philo
 	t_philo_args	*conf;
 	int				id;
 	t_time			time_last_eat;
+	t_time			initial_time;
 	sem_t			*forks;
 	sem_t			*sem_stdout;
 	sem_t			*sem_finish;

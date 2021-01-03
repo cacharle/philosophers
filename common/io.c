@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:03:53 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/02 12:08:16 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/03 14:02:21 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,10 @@ static void		st_strcat(char *dst, char *str)
 	*dst = '\0';
 }
 
-void			philo_put(size_t id, t_philo_event event)
+void			philo_put(size_t id, t_philo_event event, t_time initial_time)
 {
 	static char		buf[2048];
-	static t_time	initial_time = -1;
 
-	if (initial_time == -1)
-		initial_time = h_time_now();
 	buf[0] = '\0';
 	st_nbrcpy(buf, h_time_now() - initial_time);
 	st_strcat(buf, " ");
