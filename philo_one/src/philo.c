@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 16:49:45 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 10:42:53 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_philo	*philos_new(t_philo_conf *conf, pthread_mutex_t *forks)
 		philos[i].conf = conf;
 		philos[i].fork_left = forks + i % conf->philo_num;
 		philos[i].fork_right = forks + (i + 1) % conf->philo_num;
+		pthread_mutex_init(&philos[i].mutex_start, NULL);
+		pthread_mutex_lock(&philos[i].mutex_start);
 	}
 	return (philos);
 }
@@ -49,8 +51,10 @@ bool	philos_start(t_philo *philos, long int num)
 				pthread_detach(philos[i].thread);
 			return (false);
 		}
-		usleep(200);
 	}
+	i = -1;
+	while (++i < num)
+		pthread_mutex_unlock(&philos[i].mutex_start);
 	return (true);
 }
 

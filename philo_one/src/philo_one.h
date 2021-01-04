@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 13:56:16 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 10:38:44 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct		s_philo
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	*mutex_stdout;
+	pthread_mutex_t	mutex_start;
 }					t_philo;
 
 /*
@@ -81,7 +82,7 @@ void				*routine_death(t_philo *arg);
 ** io.c
 */
 
-void				event_take_fork(t_philo *arg, pthread_mutex_t *fork);
+void				event_take_fork(t_philo *arg);
 void				event_eat(t_philo *arg);
 void				event_think(t_philo *arg);
 void				event_sleep(

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:45:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 13:54:45 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 12:14:57 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #define PHILO_SEM_NAME        "semaphore_philo_two"
 #define PHILO_SEM_STDOUT_NAME "semaphore_philo_two_stdout"
 #define PHILO_SEM_FINISH_NAME "semaphore_philo_two_finish"
+#define PHILO_SEM_START_NAME  "semaphore_philo_two_start"
 
 static int	st_destroy(
 	t_philo *philos,
@@ -23,6 +24,7 @@ static int	st_destroy(
 	sem_unlink(PHILO_SEM_NAME);
 	sem_unlink(PHILO_SEM_STDOUT_NAME);
 	sem_unlink(PHILO_SEM_FINISH_NAME);
+	sem_unlink(PHILO_SEM_START_NAME);
 	free(philos);
 	free(threads);
 	return (1);
@@ -46,16 +48,19 @@ static int	st_setup(
 	if (!st_sem_create(PHILO_SEM_NAME, conf->philo_num, forks) ||
 		!st_sem_create(PHILO_SEM_STDOUT_NAME, 1, &conf->sem_stdout) ||
 		!st_sem_create(PHILO_SEM_FINISH_NAME,
-			conf->meal_num == -1 ? 1 : conf->philo_num, &conf->sem_finish))
+			conf->meal_num == -1 ? 1 : conf->philo_num, &conf->sem_finish) ||
+		!st_sem_create(PHILO_SEM_START_NAME, conf->philo_num, &conf->sem_start))
 		return (1);
 	*threads = NULL;
 	if ((*philos = routine_create_philos(conf, *forks)) == NULL ||
 		(*threads = malloc(sizeof(pthread_t) * conf->philo_num)) == NULL)
 		return (st_destroy(*philos, *threads));
+	i = -1;
+	while (++i < conf->philo_num)
+		sem_wait(conf->sem_start);
 	conf->initial_time = h_time_now();
 	i = -1;
 	while (++i < conf->philo_num)
-	{
 		if (pthread_create(*threads + i, NULL,
 				(t_routine)routine_philo, *philos + i) != 0)
 		{
@@ -63,8 +68,6 @@ static int	st_setup(
 				pthread_detach((*threads)[i]);
 			return (st_destroy(*philos, *threads));
 		}
-		usleep(200);
-	}
 	return (0);
 }
 
@@ -102,7 +105,11 @@ int			main(int argc, char **argv)
 		return (0);
 	if (st_setup(&conf, &philos, &forks, &threads) != 0)
 		return (1);
+	i = -1;
+	while (++i < conf.philo_num)
+		sem_post(conf.sem_start);
 	st_wait(&conf);
+	philo_put_flush();
 	i = -1;
 	while (++i < conf.philo_num)
 		pthread_detach(threads[i]);

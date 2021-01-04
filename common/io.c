@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:03:53 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 14:02:21 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 12:10:14 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static size_t	st_strlen(char *s)
 {
-	int	counter;
+	size_t	counter;
 
 	counter = 0;
 	while (s[counter])
@@ -27,38 +27,46 @@ static char		*st_nbrcpy(char *dst, long long int num)
 	if (num > 9)
 		dst = st_nbrcpy(dst, num / 10);
 	dst[0] = num % 10 + '0';
-	dst[1] = '\0';
 	return (dst + 1);
 }
 
-static void		st_strcat(char *dst, char *str)
+static char		*st_strcpy_end(char *dst, char *str)
 {
-	while (*dst != '\0')
-		dst++;
 	while (*str != '\0')
 		*dst++ = *str++;
-	*dst = '\0';
+	return (dst);
 }
+
+#define PHILO_PUT_BUF_SIZE 4048
+
+static char		g_buf[PHILO_PUT_BUF_SIZE + 256] = {'\0'};
+static char		*g_curr = g_buf;
 
 void			philo_put(size_t id, t_philo_event event, t_time initial_time)
 {
-	static char		buf[2048];
 
-	buf[0] = '\0';
-	st_nbrcpy(buf, h_time_now() - initial_time);
-	st_strcat(buf, " ");
-	st_nbrcpy(buf + st_strlen(buf), id);
+	g_curr = st_nbrcpy(g_curr, h_time_now() - initial_time);
+	g_curr = st_strcpy_end(g_curr, " ");
+	g_curr = st_nbrcpy(g_curr, id);
 	if (event == EVENT_FORK)
-		st_strcat(buf, " has taken fork\n");
+		g_curr = st_strcpy_end(g_curr, " has taken fork\n");
 	else if (event == EVENT_EAT)
-		st_strcat(buf, " is eating\n");
+		g_curr = st_strcpy_end(g_curr, " is eating\n");
 	else if (event == EVENT_SLEEP)
-		st_strcat(buf, " is sleeping\n");
+		g_curr = st_strcpy_end(g_curr, " is sleeping\n");
 	else if (event == EVENT_THINK)
-		st_strcat(buf, " is thinking\n");
+		g_curr = st_strcpy_end(g_curr, " is thinking\n");
 	else if (event == EVENT_DIE)
-		st_strcat(buf, " died\n");
-	write(STDOUT_FILENO, buf, st_strlen(buf));
+		g_curr = st_strcpy_end(g_curr, " died\n");
+	if (g_curr - g_buf > PHILO_PUT_BUF_SIZE)
+		philo_put_flush();
+}
+
+void			philo_put_flush(void)
+{
+	write(STDOUT_FILENO, g_buf, g_curr - g_buf);
+	g_curr = g_buf;
+	g_buf[0] = '\0';
 }
 
 int				h_err(int ret, const char *format, char *str)

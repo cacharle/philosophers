@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 16:34:25 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 11:52:30 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void				h_sleep(t_time sleep_time);
 
 void				philo_put(
 						size_t id, t_philo_event event, t_time initial_time);
+void				philo_put_flush(void);
 int					h_err(int ret, const char *format, char *str);
 
 #endif

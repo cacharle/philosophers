@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 14:01:58 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 11:06:41 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static int		st_destroy(t_sems *sems, pid_t *pids, int philo_num)
 	sem_unlink(PHILO_SEM_STDOUT_NAME);
 	sem_close(sems->sem_finish);
 	sem_unlink(PHILO_SEM_FINISH_NAME);
+	sem_close(sems->sem_start);
+	sem_unlink(PHILO_SEM_START_NAME);
 	return (1);
 }
 
@@ -46,6 +48,7 @@ static int		st_setup(
 
 	sems->sem_stdout = SEM_FAILED;
 	sems->sem_finish = SEM_FAILED;
+	sems->sem_start = SEM_FAILED;
 	if ((sems->forks =
 			st_sem_create(PHILO_SEM_NAME, args->philo_num)) == SEM_FAILED
 		|| (sems->sem_stdout =
@@ -53,8 +56,13 @@ static int		st_setup(
 		|| (sems->sem_finish =
 			st_sem_create(PHILO_SEM_FINISH_NAME,
 				args->meal_num == -1 ? 1 : args->philo_num)) == SEM_FAILED
+		|| (sems->sem_start =
+			st_sem_create(PHILO_SEM_START_NAME, args->philo_num)) == SEM_FAILED
 		|| (*pids = malloc(sizeof(pid_t) * args->philo_num)) == NULL)
 		return (st_destroy(sems, *pids, 0));
+	i = -1;
+	while (++i < args->philo_num)
+		sem_wait(sems->sem_start);
 	i = -1;
 	while (++i < args->philo_num)
 	{
@@ -63,8 +71,10 @@ static int		st_setup(
 		philo.initial_time = initial_time;
 		if (((*pids)[i] = child_start(&philo)) == -1)
 			return (st_destroy(sems, *pids, i));
-		usleep(200);
 	}
+	i = -1;
+	while (++i < args->philo_num)
+		sem_post(sems->sem_start);
 	return (0);
 }
 

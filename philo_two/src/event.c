@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 16:53:35 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 12:15:05 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void		event_take_fork(t_philo *arg)
 {
 	sem_wait(arg->forks);
+	sem_wait(arg->forks);
 	sem_wait(arg->conf->sem_stdout);
+	philo_put(arg->id, EVENT_FORK, arg->conf->initial_time);
 	philo_put(arg->id, EVENT_FORK, arg->conf->initial_time);
 	sem_post(arg->conf->sem_stdout);
 }

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 13:57:04 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 12:04:45 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int			main(int argc, char **argv)
 	}
 	while (!philo_finished(&conf))
 		;
+	philo_put_flush();
 	philos_detach(philos, conf.philo_num);
 	forks_destroy(forks, conf.philo_num);
 	pthread_mutex_destroy(&conf.mutex_stdout);

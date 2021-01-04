@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 12:57:27 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 12:17:48 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ void	*routine_philo(t_philo *arg)
 	long int	eat_counter;
 	pthread_t	thread_death;
 
+	eat_counter = 0;
+	sem_wait(arg->conf->sem_start);
+	if (arg->id % 2 == 0)
+		usleep(500);
 	arg->time_last_eat = h_time_now();
 	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);
-	eat_counter = 0;
-	event_think(arg);
 	while (true)
 	{
 		event_take_fork(arg);
-		event_take_fork(arg);
-		event_eat(arg);
 		arg->time_last_eat = h_time_now();
+		event_eat(arg);
 		if (arg->conf->meal_num != -1 && ++eat_counter == arg->conf->meal_num)
 		{
 			sem_wait(arg->conf->sem_stdout);

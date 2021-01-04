@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 13:51:54 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 11:01:18 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define PHILO_SEM_NAME        "semaphore_philo_three"
 # define PHILO_SEM_STDOUT_NAME "semaphore_philo_three_stdout"
 # define PHILO_SEM_FINISH_NAME "semaphore_philo_three_finish"
+# define PHILO_SEM_START_NAME  "semaphore_philo_three_start"
 
 typedef struct		s_philo
 {
@@ -36,6 +37,7 @@ typedef struct		s_philo
 	sem_t			*forks;
 	sem_t			*sem_stdout;
 	sem_t			*sem_finish;
+	sem_t			*sem_start;
 }					t_philo;
 
 typedef struct		s_sems
@@ -43,6 +45,7 @@ typedef struct		s_sems
 	sem_t			*forks;
 	sem_t			*sem_stdout;
 	sem_t			*sem_finish;
+	sem_t			*sem_start;
 }					t_sems;
 
 pid_t				child_start(t_philo *arg);
