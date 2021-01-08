@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 15:11:05 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/08 20:23:28 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static int		st_destroy(t_sems *sems, pid_t *pids, int philo_num)
 	sem_unlink(PHILO_SEM_FINISH_NAME);
 	sem_close(sems->sem_start);
 	sem_unlink(PHILO_SEM_START_NAME);
+	sem_close(sems->sem_grab);
+	sem_unlink(PHILO_SEM_GRAB_NAME);
 	return (1);
 }
 
@@ -58,6 +60,7 @@ static int		st_setup(
 				args->meal_num == -1 ? 1 : args->philo_num)) == SEM_FAILED
 		|| (sems->sem_start =
 			st_sem_create(PHILO_SEM_START_NAME, args->philo_num)) == SEM_FAILED
+		|| (sems->sem_grab = st_sem_create(PHILO_SEM_GRAB_NAME, 1)) == SEM_FAILED
 		|| (*pids = malloc(sizeof(pid_t) * args->philo_num)) == NULL)
 		return (st_destroy(sems, *pids, 0));
 	i = -1;

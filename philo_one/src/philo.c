@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 16:15:10 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/08 18:56:10 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ bool	philos_start(t_philo *philos, long int num)
 	i = -1;
 	while (++i < num)
 	{
+		if (i % 2 == 0)
+			continue;
 		if (pthread_create(
 				&philos[i].thread,
 				NULL,
@@ -55,8 +57,35 @@ bool	philos_start(t_philo *philos, long int num)
 	i = -1;
 	while (++i < num)
 	{
+		if (i % 2 == 0)
+			continue;
 		pthread_mutex_unlock(&philos[i].mutex_start);
-		/* usleep(1000); */
+		/* usleep(200); */
+	}
+	i = -1;
+	while (++i < num)
+	{
+		if (i % 2 == 1)
+			continue;
+		if (pthread_create(
+				&philos[i].thread,
+				NULL,
+				(t_routine)routine_philo,
+				(void*)(philos + i)) != 0)
+		{
+			while (--i >= 0)
+				pthread_detach(philos[i].thread);
+			return (false);
+		}
+	}
+	usleep(1000);
+	i = -1;
+	while (++i < num)
+	{
+		if (i % 2 == 1)
+			continue;
+		pthread_mutex_unlock(&philos[i].mutex_start);
+		/* usleep(200); */
 	}
 
 	return (true);

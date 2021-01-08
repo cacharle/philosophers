@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 09:35:42 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 20:10:36 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct
 	sem_t			*sem_stdout;
 	sem_t			*sem_finish;
 	sem_t			*sem_start;
+	sem_t			*sem_grab;
 }					t_philo_conf;
 
 typedef struct

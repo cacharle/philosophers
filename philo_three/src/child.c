@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 14:36:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 15:42:02 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/08 20:52:22 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*routine_death(t_philo *philo)
 	while (current - philo->time_last_eat < philo->conf->timeout_death)
 	{
 		current = h_time_now();
-		usleep(500);
+		usleep(1000);
 	}
 	event_die(philo);
 	return (NULL);
@@ -33,7 +33,10 @@ void	st_child_loop(t_philo *philo)
 	eat_counter = 0;
 	while (true)
 	{
+		sem_wait(philo->sem_grab);
 		event_take_fork(philo);
+		event_take_fork(philo);
+		sem_post(philo->sem_grab);
 		philo->time_last_eat = h_time_now();
 		event_eat(philo);
 		eat_counter++;
@@ -61,10 +64,10 @@ pid_t	child_start(t_philo *philo)
 		philo->sem_stdout = sem_open(PHILO_SEM_STDOUT_NAME, 0);
 		philo->sem_finish = sem_open(PHILO_SEM_FINISH_NAME, 0);
 		philo->sem_start = sem_open(PHILO_SEM_START_NAME, 0);
+		philo->sem_grab = sem_open(PHILO_SEM_GRAB_NAME, 0);
 		philo->time_last_eat = h_time_now();
 		pthread_create(&thread_death, NULL, (t_routine)routine_death, philo);
 		pthread_detach(thread_death);
-		event_think(philo);
 		sem_wait(philo->sem_start);
 		st_child_loop(philo);
 		exit(0);
