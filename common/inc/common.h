@@ -6,13 +6,14 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 11:52:30 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/04 13:06:52 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMON_H
 # define COMMON_H
 
+# define _XOPEN_SOURCE 500
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdbool.h>

@@ -6,17 +6,18 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/24 05:50:15 by cacharle          #+#    #+#              #
-#    Updated: 2021/01/02 11:27:33 by cacharle         ###   ########.fr        #
+#    Updated: 2021/01/08 14:31:50 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 RM = rm -f
+MKDIR = mkdir -p
 MAKE = make --no-print-directory
 
 COMMONDIR = ../common
 
 CC = gcc
-CCFLAGS = -g -I$(COMMONDIR) -O2 -std=c99 -Wall -Wextra #-Werror
+CCFLAGS = -std=c99 -Wall -Wextra -Werror -O2  -I$(COMMONDIR)/inc
 LDFLAGS = -lpthread -L$(COMMONDIR) -lphilocommon
 
 NAME = philo_two
@@ -30,7 +31,7 @@ OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 all: prebuild $(NAME)
 
 prebuild:
-	@mkdir -p $(OBJDIR)
+	$(MKDIR) $(OBJDIR)
 
 $(NAME): common_all $(OBJ)
 	$(CC) -o $@ $(OBJ) $(LDFLAGS)
