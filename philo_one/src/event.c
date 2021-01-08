@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 12:08:15 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 16:02:43 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	event_eat(t_philo *arg)
 	if (philo_finished(arg->conf))
 		return ;
 	philo_put(arg->id, EVENT_EAT, arg->conf->initial_time);
-	if (arg->conf->philo_num < 30)
-		philo_put_flush();
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 	h_sleep(arg->conf->timeout_eat);
 }

@@ -6,7 +6,7 @@
 #    By: cacharle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/09 22:39:08 by cacharle          #+#    #+#              #
-#    Updated: 2021/01/08 14:32:37 by charles          ###   ########.fr        #
+#    Updated: 2021/01/08 15:05:48 by charles          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJDIR = obj
 INCDIR = inc
 
 CC = gcc
-CCFLAGS = -std=c99 -Wall -Wextra -Werror -O2 -I$(INCDIR)
+CCFLAGS = -std=c99 -O2 -I$(INCDIR) -Wall -Wextra #-Werror
 
 NAME = libphilocommon.a
 

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:47:14 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 10:42:53 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 16:15:10 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ bool	philos_start(t_philo *philos, long int num)
 	}
 	i = -1;
 	while (++i < num)
+	{
 		pthread_mutex_unlock(&philos[i].mutex_start);
+		/* usleep(1000); */
+	}
+
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 12:04:45 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 15:20:18 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,17 @@ static int	st_setup(
 	return (0);
 }
 
+void		*routine_flush(t_philo_conf *conf)
+{
+	while (true)
+	{
+		pthread_mutex_lock(&conf->mutex_stdout);
+		philo_put_flush();
+		pthread_mutex_unlock(&conf->mutex_stdout);
+		usleep(250000);
+	}
+}
+
 int			main(int argc, char **argv)
 {
 	t_philo_conf	conf;
@@ -54,6 +65,9 @@ int			main(int argc, char **argv)
 		return (0);
 	if (st_setup(&conf, &philos, &forks) != 0)
 		return (1);
+	pthread_t thread_flush;
+	pthread_create(&thread_flush, NULL, (t_routine)routine_flush, (void*)&conf);
+	pthread_detach(thread_flush);
 	conf.initial_time = h_time_now();
 	if (!philos_start(philos, conf.philo_num))
 	{

@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:03:53 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 12:10:14 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 15:19:47 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ static char		*st_strcpy_end(char *dst, char *str)
 	return (dst);
 }
 
-#define PHILO_PUT_BUF_SIZE 4048
+#define PHILO_PUT_BUF_SIZE 20000
 
 static char		g_buf[PHILO_PUT_BUF_SIZE + 256] = {'\0'};
 static char		*g_curr = g_buf;
 
 void			philo_put(size_t id, t_philo_event event, t_time initial_time)
 {
-
 	g_curr = st_nbrcpy(g_curr, h_time_now() - initial_time);
 	g_curr = st_strcpy_end(g_curr, " ");
 	g_curr = st_nbrcpy(g_curr, id);

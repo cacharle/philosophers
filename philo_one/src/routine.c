@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 10:42:48 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 16:14:57 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,12 @@ void		*routine_philo(t_philo *arg)
 	pthread_mutex_lock(&arg->mutex_start);
 	if (philo_finished(arg->conf))
 		return (NULL);
-	if (arg->id % 2 == 0)
+	if (arg->conf->philo_num % 2 == 0 && arg->id % 2 == 0)
 		usleep(1000);
+	if (arg->conf->philo_num % 2 == 1 && arg->id % 3 == 0)
+		usleep(1000);
+	if (arg->conf->philo_num % 2 == 1 && arg->id % 3 == 1)
+		usleep(2000);
 	arg->time_last_eat = h_time_now();
 	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);

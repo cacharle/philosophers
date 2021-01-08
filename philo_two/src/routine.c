@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 12:17:48 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 16:31:27 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ void	*routine_philo(t_philo *arg)
 
 	eat_counter = 0;
 	sem_wait(arg->conf->sem_start);
-	if (arg->id % 2 == 0)
-		usleep(500);
+	/* if (arg->conf->philo_num % 2 == 0 && arg->id % 2 == 0) */
+	/* 	usleep(1000); */
+	/* if (arg->conf->philo_num % 2 == 1 && arg->id % 3 == 0) */
+	/* 	usleep(1000); */
+	/* if (arg->conf->philo_num % 2 == 1 && arg->id % 3 == 1) */
+	/* 	usleep(500); */
 	arg->time_last_eat = h_time_now();
 	if (pthread_create(&thread_death, NULL, (t_routine)routine_death, arg) != 0)
 		return (NULL);

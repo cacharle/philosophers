@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:45:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 12:14:57 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 16:32:15 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@ static bool	st_sem_create(const char *name, unsigned int value, sem_t **sem)
 	sem_unlink(name);
 	return ((*sem = sem_open(name, O_CREAT | O_EXCL, 0700, value))
 			!= SEM_FAILED);
+}
+
+void		*routine_flush(t_philo_conf *conf)
+{
+	while (true)
+	{
+		sem_wait(conf->sem_stdout);
+		philo_put_flush();
+		sem_post(conf->sem_stdout);
+		usleep(250000);
+	}
 }
 
 static int	st_setup(
@@ -105,6 +116,9 @@ int			main(int argc, char **argv)
 		return (0);
 	if (st_setup(&conf, &philos, &forks, &threads) != 0)
 		return (1);
+	pthread_t thread_flush;
+	pthread_create(&thread_flush, NULL, (t_routine)routine_flush, (void*)&conf);
+	pthread_detach(thread_flush);
 	i = -1;
 	while (++i < conf.philo_num)
 		sem_post(conf.sem_start);

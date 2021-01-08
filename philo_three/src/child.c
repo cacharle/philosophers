@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 14:36:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 11:03:58 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/08 15:42:02 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,9 @@ pid_t	child_start(t_philo *philo)
 		philo->sem_start = sem_open(PHILO_SEM_START_NAME, 0);
 		philo->time_last_eat = h_time_now();
 		pthread_create(&thread_death, NULL, (t_routine)routine_death, philo);
+		pthread_detach(thread_death);
 		event_think(philo);
 		sem_wait(philo->sem_start);
-		if (philo->id % 2 == 0)
-			usleep(500);
 		st_child_loop(philo);
 		exit(0);
 	}
