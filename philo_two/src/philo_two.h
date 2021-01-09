@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 20:10:36 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/09 15:17:40 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ typedef struct
 	t_time			timeout_sleep;
 	long int		meal_num;
 	t_time			initial_time;
+	sem_t			*sem_forks;
 	sem_t			*sem_stdout;
 	sem_t			*sem_finish;
+	sem_t			*sem_meal_num;
 	sem_t			*sem_start;
 	sem_t			*sem_grab;
 }					t_philo_conf;
@@ -41,7 +43,6 @@ typedef struct
 	long int		id;
 	t_philo_conf	*conf;
 	t_time			time_last_eat;
-	sem_t			*forks;
 }					t_philo;
 
 /*
@@ -50,7 +51,7 @@ typedef struct
 
 void				*routine_philo(t_philo *arg);
 void				*routine_death(t_philo *arg);
-t_philo				*routine_create_philos(t_philo_conf *conf, sem_t *forks);
+t_philo				*routine_create_philos(t_philo_conf *conf);
 
 /*
 ** io.c

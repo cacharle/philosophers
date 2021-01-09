@@ -6,7 +6,7 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 14:36:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 20:52:22 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/09 15:59:00 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	st_child_loop(t_philo *philo)
 		if (philo->conf->meal_num != -1 && eat_counter == philo->conf->meal_num)
 		{
 			sem_wait(philo->sem_stdout);
-			sem_post(philo->sem_finish);
+			sem_post(philo->sem_meal_num);
 			sem_post(philo->sem_stdout);
 		}
 		event_sleep(philo);
@@ -63,6 +63,7 @@ pid_t	child_start(t_philo *philo)
 		philo->forks = sem_open(PHILO_SEM_NAME, 0);
 		philo->sem_stdout = sem_open(PHILO_SEM_STDOUT_NAME, 0);
 		philo->sem_finish = sem_open(PHILO_SEM_FINISH_NAME, 0);
+		philo->sem_meal_num = sem_open(PHILO_SEM_MEAL_NUM_NAME, 0);
 		philo->sem_start = sem_open(PHILO_SEM_START_NAME, 0);
 		philo->sem_grab = sem_open(PHILO_SEM_GRAB_NAME, 0);
 		philo->time_last_eat = h_time_now();

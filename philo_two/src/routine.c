@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 23:00:07 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 20:18:00 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/09 15:17:32 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*routine_philo(t_philo *arg)
 		if (arg->conf->meal_num != -1 && ++eat_counter == arg->conf->meal_num)
 		{
 			sem_wait(arg->conf->sem_stdout);
-			sem_post(arg->conf->sem_finish);
+			sem_post(arg->conf->sem_meal_num);
 			sem_post(arg->conf->sem_stdout);
 		}
 		event_sleep(arg);
@@ -57,7 +57,7 @@ void	*routine_death(t_philo *arg)
 	return (NULL);
 }
 
-t_philo	*routine_create_philos(t_philo_conf *conf, sem_t *forks)
+t_philo	*routine_create_philos(t_philo_conf *conf)
 {
 	int		i;
 	t_philo	*philos;
@@ -68,7 +68,6 @@ t_philo	*routine_create_philos(t_philo_conf *conf, sem_t *forks)
 	while (++i < conf->philo_num)
 	{
 		philos[i].id = i + 1;
-		philos[i].forks = forks;
 		philos[i].conf = conf;
 	}
 	return (philos);
