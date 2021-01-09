@@ -6,22 +6,18 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 18:27:33 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/09 13:12:20 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	event_take_fork(t_philo *arg)
+void	event_take_fork(t_philo *arg, pthread_mutex_t *mutex_fork)
 {
 	if (philo_finished(arg->conf))
 		return ;
-	pthread_mutex_lock(arg->fork_left);
-	pthread_mutex_lock(arg->fork_right);
+	pthread_mutex_lock(mutex_fork);
 	pthread_mutex_lock(&arg->conf->mutex_stdout);
-	if (philo_finished(arg->conf))
-		return ;
-	philo_put(arg->id, EVENT_FORK, arg->conf->initial_time);
 	if (philo_finished(arg->conf))
 		return ;
 	philo_put(arg->id, EVENT_FORK, arg->conf->initial_time);
@@ -39,6 +35,7 @@ void	event_eat(t_philo *arg)
 	pthread_mutex_unlock(&arg->conf->mutex_stdout);
 	arg->time_last_eat = h_time_now();
 	h_sleep(arg->conf->timeout_eat);
+	arg->time_last_eat = h_time_now();
 }
 
 void	event_think(t_philo *arg)

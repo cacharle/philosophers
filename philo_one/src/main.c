@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/08 15:20:18 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/09 14:26:48 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			main(int argc, char **argv)
 		return (1);
 	}
 	while (!philo_finished(&conf))
-		;
+		usleep(500);
 	philo_put_flush();
 	philos_detach(philos, conf.philo_num);
 	forks_destroy(forks, conf.philo_num);

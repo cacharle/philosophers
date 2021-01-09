@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 10:38:44 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/09 14:26:58 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void				*routine_death(t_philo *arg);
 ** io.c
 */
 
-void				event_take_fork(t_philo *arg);
+void				event_take_fork(t_philo *arg, pthread_mutex_t *mutex_fork);
 void				event_eat(t_philo *arg);
 void				event_think(t_philo *arg);
 void				event_sleep(
