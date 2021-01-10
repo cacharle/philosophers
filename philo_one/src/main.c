@@ -6,43 +6,28 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 09:33:17 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 11:51:10 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-static int	st_setup(
+static int	st_destroy(
 	t_philo_conf *conf,
-	t_philo **philos,
-	pthread_mutex_t **forks)
+	t_philo *philos,
+	pthread_mutex_t *mutex_stdout,
+	pthread_mutex_t *mutex_meal_num_finished_counter)
 {
-	if ((*forks = forks_new(conf->philo_num)) == NULL)
-		return (1);
-	if ((*philos = philos_new(conf, *forks)) == NULL)
-	{
-		forks_destroy(*forks, conf->philo_num);
-		return (1);
-	}
-	if (pthread_mutex_init(&conf->mutex_stdout, NULL) != 0)
-	{
-		forks_destroy(*forks, conf->philo_num);
-		free(*philos);
-		return (1);
-	}
-	if (pthread_mutex_init(&conf->mutex_meal_num_finished_counter, NULL) != 0)
-	{
-		forks_destroy(*forks, conf->philo_num);
-		free(*philos);
-		pthread_mutex_destroy(&conf->mutex_stdout);
-		return (1);
-	}
-	conf->all_alive = true;
-	conf->meal_num_finished_counter = 0;
-	return (0);
+	philos_destroy(philos, conf->philo_num);
+	forks_destroy(conf->forks, conf->philo_num);
+	if (mutex_stdout != NULL)
+		pthread_mutex_destroy(mutex_stdout);
+	if (mutex_meal_num_finished_counter != NULL)
+		pthread_mutex_destroy(mutex_meal_num_finished_counter);
+	return (1);
 }
 
-void		*routine_flush(t_philo_conf *conf)
+static void	*st_routine_flush(t_philo_conf *conf)
 {
 	while (true)
 	{
@@ -53,35 +38,50 @@ void		*routine_flush(t_philo_conf *conf)
 	}
 }
 
+static int	st_setup(
+	t_philo_conf *conf,
+	t_philo **philos)
+{
+	pthread_t	thread_flush;
+
+	if (pthread_create(&thread_flush, NULL,
+				(t_routine)st_routine_flush, (void*)&conf) != 0)
+		return (1);
+	pthread_detach(thread_flush);
+	if ((conf->forks = forks_new(conf->philo_num)) == NULL)
+		return (1);
+	if ((*philos = philos_new(conf)) == NULL)
+		return (st_destroy(conf, NULL, NULL, NULL));
+	if (pthread_mutex_init(&conf->mutex_stdout, NULL) != 0)
+		return (st_destroy(conf, *philos, NULL, NULL));
+	if (pthread_mutex_init(&conf->mutex_meal_num_finished_counter, NULL) != 0)
+		return (st_destroy(conf, *philos, &conf->mutex_stdout, NULL));
+	conf->all_alive = true;
+	conf->meal_num_finished_counter = 0;
+	return (0);
+}
+
 int			main(int argc, char **argv)
 {
 	t_philo_conf	conf;
 	t_philo			*philos;
-	pthread_mutex_t	*forks;
 
 	if (!parse_args((t_philo_args*)&conf, argc, argv))
 		return (1);
 	if (conf.philo_num == 0 || conf.meal_num == 0)
 		return (0);
-	if (st_setup(&conf, &philos, &forks) != 0)
+	if (st_setup(&conf, &philos) != 0)
 		return (1);
-	pthread_t thread_flush;
-	pthread_create(&thread_flush, NULL, (t_routine)routine_flush, (void*)&conf);
-	pthread_detach(thread_flush);
 	conf.initial_time = h_time_now();
 	if (!philos_start(philos, conf.philo_num))
 	{
-		forks_destroy(forks, conf.philo_num);
-		free(philos);
-		return (1);
+		return (st_destroy(&conf, philos,
+				&conf.mutex_stdout, &conf.mutex_meal_num_finished_counter));
 	}
 	while (!philo_finished(&conf))
 		usleep(500);
 	philo_put_flush();
-	philos_detach(philos, conf.philo_num);
-	forks_destroy(forks, conf.philo_num);
-	pthread_mutex_destroy(&conf.mutex_stdout);
-	pthread_mutex_destroy(&conf.mutex_meal_num_finished_counter);
-	free(philos);
+	st_destroy(&conf, philos,
+		&conf.mutex_stdout, &conf.mutex_meal_num_finished_counter);
 	return (0);
 }

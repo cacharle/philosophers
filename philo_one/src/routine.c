@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 09:54:30 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 11:52:44 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ static void	st_check_meal_num_finished(t_philo *arg, long int eat_counter)
 	}
 }
 
+static void	st_take_both_forks(t_philo *arg)
+{
+	if (arg->id % 2 == 0)
+	{
+		event_take_fork(arg, arg->fork_left);
+		event_take_fork(arg, arg->fork_right);
+	}
+	else
+	{
+		event_take_fork(arg, arg->fork_right);
+		event_take_fork(arg, arg->fork_left);
+	}
+}
+
 void		*routine_philo(t_philo *arg)
 {
 	pthread_t	thread_death;
@@ -45,16 +59,7 @@ void		*routine_philo(t_philo *arg)
 	arg->time_last_eat = h_time_now();
 	while (!philo_finished(arg->conf))
 	{
-		if (arg->id % 2 == 0)
-		{
-			event_take_fork(arg, arg->fork_left);
-			event_take_fork(arg, arg->fork_right);
-		}
-		else
-		{
-			event_take_fork(arg, arg->fork_right);
-			event_take_fork(arg, arg->fork_left);
-		}
+		st_take_both_forks(arg);
 		event_eat(arg);
 		eat_counter++;
 		st_check_meal_num_finished(arg, eat_counter);

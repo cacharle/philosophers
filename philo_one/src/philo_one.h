@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 09:50:02 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 11:42:48 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct
 	t_time			initial_time;
 	pthread_mutex_t	mutex_stdout;
 	pthread_mutex_t	mutex_meal_num_finished_counter;
+	pthread_mutex_t	*forks;
 }					t_philo_conf;
 
 typedef struct		s_philo
@@ -66,10 +67,9 @@ void				forks_destroy(pthread_mutex_t *forks, long int num);
 ** philo.c
 */
 
-t_philo				*philos_new(t_philo_conf *conf, pthread_mutex_t *forks);
-void				philos_destroy(t_philo *philos, long int num);
+t_philo				*philos_new(t_philo_conf *conf);
 bool				philos_start(t_philo *philos, long int num);
-void				philos_detach(t_philo *philos, long int num);
+void				philos_destroy(t_philo *philos, long int num);
 
 /*
 ** routine.c

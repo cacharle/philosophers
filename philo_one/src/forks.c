@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:46:40 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/01 13:34:42 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 11:29:09 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ pthread_mutex_t	*forks_new(long int num)
 
 void			forks_destroy(pthread_mutex_t *forks, long int num)
 {
+	if (forks == NULL)
+		return ;
 	while (num-- > 0)
 		pthread_mutex_destroy(&forks[num]);
 	free(forks);
