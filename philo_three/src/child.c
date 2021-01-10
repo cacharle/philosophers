@@ -6,13 +6,13 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 14:36:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 10:39:19 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 12:06:40 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-void	*routine_death(t_philo *philo)
+static void	*st_routine_death(t_philo *philo)
 {
 	while (true)
 	{
@@ -73,8 +73,10 @@ pid_t	child_start(t_philo *philo)
 		philo->sem_eat = sem_open(sem_eat_name, O_CREAT | O_EXCL, 0700, 1);
 		sem_wait(philo->sem_start);
 		philo->time_last_eat = h_time_now();
-		pthread_create(&thread_death, NULL, (t_routine)routine_death, philo);
+		if (pthread_create(&thread_death, NULL, (t_routine)st_routine_death, philo) != 0)
+			exit(1);
 		pthread_detach(thread_death);
+		philo->time_last_eat = h_time_now();
 		st_child_loop(philo);
 		exit(0);
 	}

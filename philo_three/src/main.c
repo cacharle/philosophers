@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 15:57:47 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 13:23:54 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int				main(int argc, char **argv)
 	if (conf.meal_num != -1)
 	{
 		pthread_t thread_meal_num;
-		pthread_create(&thread_meal_num, NULL, (t_routine)st_routine_meal_num, (void*)&conf);
+		pthread_create(&thread_meal_num, NULL, (t_routine)st_routine_meal_num, &conf);
 		pthread_detach(thread_meal_num);
 	}
 	sem_wait(conf.sem_finish);

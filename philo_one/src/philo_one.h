@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 11:42:48 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 12:00:35 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void				philos_destroy(t_philo *philos, long int num);
 
 bool				philo_finished(t_philo_conf *conf);
 void				*routine_philo(t_philo *arg);
-void				*routine_death(t_philo *arg);
 
 /*
 ** io.c

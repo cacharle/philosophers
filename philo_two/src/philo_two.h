@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 10:03:58 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 13:36:51 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <semaphore.h>
 
 # include "common.h"
+
+# define PHILO_SEM_EAT_PREFIX "semaphore_philo_two_eat_"
 
 typedef struct
 {
@@ -51,8 +53,14 @@ typedef struct
 */
 
 void				*routine_philo(t_philo *arg);
-void				*routine_death(t_philo *arg);
 t_philo				*routine_create_philos(t_philo_conf *conf);
+
+/*
+** routine_meta.c
+*/
+
+void				*routine_flush(t_philo_conf *conf);
+void				*routine_meal_num(t_philo_conf *conf);
 
 /*
 ** io.c
