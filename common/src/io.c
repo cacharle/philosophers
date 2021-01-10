@@ -6,20 +6,25 @@
 /*   By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 10:03:53 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 10:12:23 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 11:06:51 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-static size_t	st_strlen(char *s)
+static char		*st_nbrcpy(char *dst, long long int num)
 {
-	size_t	counter;
+	if (num > 9)
+		dst = st_nbrcpy(dst, num / 10);
+	dst[0] = num % 10 + '0';
+	return (dst + 1);
+}
 
-	counter = 0;
-	while (s[counter])
-		counter++;
-	return (counter);
+static char		*st_strcpy_end(char *dst, const char *str)
+{
+	while (*str != '\0')
+		*dst++ = *str++;
+	return (dst);
 }
 
 #define PHILO_PUT_BUF_SIZE 20000
@@ -29,19 +34,19 @@ static char		*g_curr = g_buf;
 
 void			philo_put(size_t id, t_philo_event event, t_time initial_time)
 {
-	g_curr = h_nbrcpy(g_curr, h_time_now() - initial_time);
-	g_curr = h_strcpy_end(g_curr, " ");
-	g_curr = h_nbrcpy(g_curr, id);
+	g_curr = st_nbrcpy(g_curr, h_time_now() - initial_time);
+	g_curr = st_strcpy_end(g_curr, " ");
+	g_curr = st_nbrcpy(g_curr, id);
 	if (event == EVENT_FORK)
-		g_curr = h_strcpy_end(g_curr, " has taken fork\n");
+		g_curr = st_strcpy_end(g_curr, " has taken fork\n");
 	else if (event == EVENT_EAT)
-		g_curr = h_strcpy_end(g_curr, " is eating\n");
+		g_curr = st_strcpy_end(g_curr, " is eating\n");
 	else if (event == EVENT_SLEEP)
-		g_curr = h_strcpy_end(g_curr, " is sleeping\n");
+		g_curr = st_strcpy_end(g_curr, " is sleeping\n");
 	else if (event == EVENT_THINK)
-		g_curr = h_strcpy_end(g_curr, " is thinking\n");
+		g_curr = st_strcpy_end(g_curr, " is thinking\n");
 	else if (event == EVENT_DIE)
-		g_curr = h_strcpy_end(g_curr, " died\n");
+		g_curr = st_strcpy_end(g_curr, " died\n");
 	if (g_curr - g_buf > PHILO_PUT_BUF_SIZE)
 		philo_put_flush();
 }
@@ -53,22 +58,15 @@ void			philo_put_flush(void)
 	g_buf[0] = '\0';
 }
 
-int				h_err(int ret, const char *format, char *str)
+#define PHILO_SEM_EAT_BUF_SIZE 2048
+
+const char		*philo_sem_eat_name(const char *prefix, long int id)
 {
-	while (*format != '\0')
-	{
-		if (format[0] == '%' && format[1] == 's')
-		{
-			if (str != NULL)
-				write(STDERR_FILENO, str, st_strlen(str));
-			format += 2;
-		}
-		else
-		{
-			write(STDERR_FILENO, format, 1);
-			format++;
-		}
-	}
-	write(STDERR_FILENO, "\n", 1);
-	return (ret);
+	static char	buf[PHILO_SEM_EAT_BUF_SIZE];
+	char		*end;
+
+	buf[0] = '\0';
+	end = st_strcpy_end(buf, prefix);
+	st_nbrcpy(end, id);
+	return (buf);
 }

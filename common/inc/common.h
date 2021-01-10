@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 10:32:17 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 11:11:23 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,8 @@ bool				parse_args(t_philo_args *args, int argc, char **argv);
 ** helper.c
 */
 
-long int			h_atou_strict(char *s);
 t_time				h_time_now(void);
 void				h_sleep(t_time sleep_time);
-char				*h_nbrcpy(char *dst, long long int num);
-char				*h_strcpy_end(char *dst, const char *str);
-const char			*philo_sem_eat_name(const char *prefix, long int id);
 
 /*
 ** io.c
@@ -67,6 +63,6 @@ const char			*philo_sem_eat_name(const char *prefix, long int id);
 void				philo_put(
 						size_t id, t_philo_event event, t_time initial_time);
 void				philo_put_flush(void);
-int					h_err(int ret, const char *format, char *str);
+const char			*philo_sem_eat_name(const char *prefix, long int id);
 
 #endif
