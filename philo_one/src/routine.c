@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 01:11:27 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 14:32:33 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 09:54:30 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,14 @@ void		*routine_philo(t_philo *arg)
 
 void		*routine_death(t_philo *arg)
 {
-	while (!philo_finished(arg->conf) &&
-			h_time_now() - arg->time_last_eat < arg->conf->timeout_death)
-		usleep(1000);
+	while (!philo_finished(arg->conf))
+	{
+		pthread_mutex_lock(&arg->mutex_eat);
+		if (h_time_now() - arg->time_last_eat > arg->conf->timeout_death)
+			break ;
+		pthread_mutex_unlock(&arg->mutex_eat);
+		usleep(2000);
+	}
 	event_die(arg);
 	return (NULL);
 }

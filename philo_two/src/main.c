@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:45:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 15:35:47 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 10:18:12 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,17 @@ static int	st_destroy(
 	t_philo *philos,
 	pthread_t *threads)
 {
+	/* long int	i; */
+
 	sem_unlink(PHILO_SEM_NAME);
 	sem_unlink(PHILO_SEM_STDOUT_NAME);
 	sem_unlink(PHILO_SEM_FINISH_NAME);
 	sem_unlink(PHILO_SEM_MEAL_NUM_NAME);
 	sem_unlink(PHILO_SEM_START_NAME);
 	sem_unlink(PHILO_SEM_GRAB_NAME);
+	/* i = -1; */
+	/* while (++i < philos[0].conf->philo_num) */
+	/* 	sem_unlink(philo_sem_eat_name(philo[i].id)); */
 	free(philos);
 	free(threads);
 	return (1);

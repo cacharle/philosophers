@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 21:37:50 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 15:48:12 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 10:39:20 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ void		event_take_fork(t_philo *philo)
 
 void		event_eat(t_philo *philo)
 {
+	sem_wait(philo->sem_eat);
 	sem_wait(philo->sem_stdout);
 	philo_put(philo->id, EVENT_EAT, philo->initial_time);
 	philo_put_flush();
 	sem_post(philo->sem_stdout);
+	philo->time_last_eat = h_time_now();
+	sem_post(philo->sem_eat);
 	h_sleep(philo->conf->timeout_eat);
 }
 

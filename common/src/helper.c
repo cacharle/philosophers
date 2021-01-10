@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 23:22:49 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/03 16:55:42 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 10:32:06 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,32 @@ void		h_sleep(t_time sleep_time)
 	start = h_time_now();
 	while (h_time_now() - start < sleep_time)
 		usleep(500);
+}
+
+char		*h_nbrcpy(char *dst, long long int num)
+{
+	if (num > 9)
+		dst = h_nbrcpy(dst, num / 10);
+	dst[0] = num % 10 + '0';
+	return (dst + 1);
+}
+
+char		*h_strcpy_end(char *dst, const char *str)
+{
+	while (*str != '\0')
+		*dst++ = *str++;
+	return (dst);
+}
+
+#define PHILO_SEM_EAT_BUF_SIZE 2048
+
+const char		*philo_sem_eat_name(const char *prefix, long int id)
+{
+	static char	buf[PHILO_SEM_EAT_BUF_SIZE];
+	char		*end;
+
+	buf[0] = '\0';
+	end = h_strcpy_end(buf, prefix);
+	h_nbrcpy(end, id);
+	return (buf);
 }

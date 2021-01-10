@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 15:47:32 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 10:26:27 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct		s_philo
 	sem_t			*sem_meal_num;
 	sem_t			*sem_start;
 	sem_t			*sem_grab;
+	sem_t			*sem_eat;
 }					t_philo;
 
 pid_t				child_start(t_philo *arg);

@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 22:47:23 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 15:17:40 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 10:03:58 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct
 	long int		id;
 	t_philo_conf	*conf;
 	t_time			time_last_eat;
+	sem_t			*sem_eat;
 }					t_philo;
 
 /*

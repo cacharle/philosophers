@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 22:58:35 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/04 13:06:52 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 10:32:17 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ bool				parse_args(t_philo_args *args, int argc, char **argv);
 long int			h_atou_strict(char *s);
 t_time				h_time_now(void);
 void				h_sleep(t_time sleep_time);
+char				*h_nbrcpy(char *dst, long long int num);
+char				*h_strcpy_end(char *dst, const char *str);
+const char			*philo_sem_eat_name(const char *prefix, long int id);
 
 /*
 ** io.c

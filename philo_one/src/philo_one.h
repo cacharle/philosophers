@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/09 14:26:58 by charles          ###   ########.fr       */
+/*   Updated: 2021/01/10 09:50:02 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct		s_philo
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	*mutex_stdout;
 	pthread_mutex_t	mutex_start;
+	pthread_mutex_t	mutex_eat;
 }					t_philo;
 
 /*
