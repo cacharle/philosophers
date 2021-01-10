@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:46:26 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 10:26:27 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/10 14:00:13 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,28 @@ typedef struct		s_philo
 	sem_t			*sem_eat;
 }					t_philo;
 
+/*
+** child.c
+*/
+
 pid_t				child_start(t_philo *arg);
+
+/*
+** event.c
+*/
 
 void				event_take_fork(t_philo *arg);
 void				event_eat(t_philo *arg);
 void				event_think(t_philo *arg);
 void				event_sleep(t_philo *arg);
 void				event_die(t_philo *arg);
+
+/*
+** helper.c
+*/
+
+void				h_destroy_sem(const char *name, sem_t *sem);
+bool				h_sem_create(
+						const char *name, unsigned int value, sem_t **sem);
 
 #endif
