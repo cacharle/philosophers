@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 11:51:10 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/12 12:53:27 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,16 @@ static int	st_setup(
 {
 	pthread_t	thread_flush;
 
-	if (pthread_create(&thread_flush, NULL,
-				(t_routine)st_routine_flush, (void*)&conf) != 0)
-		return (1);
-	pthread_detach(thread_flush);
 	if ((conf->forks = forks_new(conf->philo_num)) == NULL)
 		return (1);
 	if ((*philos = philos_new(conf)) == NULL)
 		return (st_destroy(conf, NULL, NULL, NULL));
 	if (pthread_mutex_init(&conf->mutex_stdout, NULL) != 0)
 		return (st_destroy(conf, *philos, NULL, NULL));
+	if (pthread_create(&thread_flush, NULL,
+				(t_routine)st_routine_flush, (void*)&conf) != 0)
+		return (st_destroy(conf, *philos, &conf->mutex_stdout, NULL));
+	pthread_detach(thread_flush);
 	if (pthread_mutex_init(&conf->mutex_meal_num_finished_counter, NULL) != 0)
 		return (st_destroy(conf, *philos, &conf->mutex_stdout, NULL));
 	conf->all_alive = true;

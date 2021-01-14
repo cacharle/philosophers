@@ -6,13 +6,13 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:45:24 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 14:25:49 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/14 10:54:56 by cacharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-static int	st_destroy(t_philo_conf *conf, pid_t *pids, long int philo_num)
+static int	st_destroy(pid_t *pids, long int philo_num)
 {
 	long int	i;
 
@@ -23,12 +23,12 @@ static int	st_destroy(t_philo_conf *conf, pid_t *pids, long int philo_num)
 			kill(pids[i], SIGKILL);
 		free(pids);
 	}
-	h_destroy_sem(PHILO_SEM_NAME, conf->forks);
-	h_destroy_sem(PHILO_SEM_STDOUT_NAME, conf->sem_stdout);
-	h_destroy_sem(PHILO_SEM_FINISH_NAME, conf->sem_finish);
-	h_destroy_sem(PHILO_SEM_MEAL_NUM_NAME, conf->sem_meal_num);
-	h_destroy_sem(PHILO_SEM_START_NAME, conf->sem_start);
-	h_destroy_sem(PHILO_SEM_GRAB_NAME, conf->sem_grab);
+	sem_unlink(PHILO_SEM_NAME);
+	sem_unlink(PHILO_SEM_STDOUT_NAME);
+	sem_unlink(PHILO_SEM_FINISH_NAME);
+	sem_unlink(PHILO_SEM_MEAL_NUM_NAME);
+	sem_unlink(PHILO_SEM_START_NAME);
+	sem_unlink(PHILO_SEM_GRAB_NAME);
 	return (1);
 }
 
@@ -103,16 +103,16 @@ int			main(int argc, char **argv)
 	if (conf.philo_num == 0 || conf.meal_num == 0)
 		return (0);
 	if (st_setup(&conf, &pids) != 0 || st_start(&conf, pids, h_time_now()) != 0)
-		return (st_destroy(&conf, pids, conf.philo_num));
+		return (st_destroy(pids, conf.philo_num));
 	if (conf.meal_num != -1)
 	{
 		if (pthread_create(&thread_meal_num,
 					NULL, (t_routine)st_routine_meal_num, &conf) != 0)
-			return (st_destroy(&conf, pids, conf.philo_num));
+			return (st_destroy(pids, conf.philo_num));
 		pthread_detach(thread_meal_num);
 	}
 	sem_wait(conf.sem_finish);
 	sem_wait(conf.sem_finish);
-	st_destroy(&conf, pids, conf.philo_num);
+	st_destroy(pids, conf.philo_num);
 	return (0);
 }
