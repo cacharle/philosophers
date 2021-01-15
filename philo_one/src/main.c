@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 05:53:02 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/12 12:53:27 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/15 22:40:50 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	st_destroy(
 
 static void	*st_routine_flush(t_philo_conf *conf)
 {
+	pthread_mutex_unlock(&conf->mutex_stdout); // ???????????????
 	while (true)
 	{
 		pthread_mutex_lock(&conf->mutex_stdout);
@@ -36,6 +37,7 @@ static void	*st_routine_flush(t_philo_conf *conf)
 		pthread_mutex_unlock(&conf->mutex_stdout);
 		usleep(250000);
 	}
+	return (NULL);
 }
 
 static int	st_setup(

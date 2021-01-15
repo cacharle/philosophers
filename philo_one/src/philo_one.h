@@ -6,7 +6,7 @@
 /*   By: cacharle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 06:11:16 by cacharle          #+#    #+#             */
-/*   Updated: 2021/01/10 12:00:35 by cacharle         ###   ########.fr       */
+/*   Updated: 2021/01/15 22:43:00 by charles          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ typedef struct
 	bool			all_alive;
 	long int		meal_num_finished_counter;
 	t_time			initial_time;
-	pthread_mutex_t	mutex_stdout;
 	pthread_mutex_t	mutex_meal_num_finished_counter;
 	pthread_mutex_t	*forks;
+	long int padding4; // ???????????????
+	long int padding3;
+	pthread_mutex_t	mutex_stdout;
 }					t_philo_conf;
 
 typedef struct		s_philo
@@ -51,7 +53,6 @@ typedef struct		s_philo
 	t_philo_conf	*conf;
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
-	pthread_mutex_t	*mutex_stdout;
 	pthread_mutex_t	mutex_start;
 	pthread_mutex_t	mutex_eat;
 }					t_philo;
